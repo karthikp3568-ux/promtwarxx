@@ -93,15 +93,22 @@ export default function Check() {
   const analysis = useConversationAnalysis();
   const [sampleLoading, setSampleLoading] = useState(false);
 
-  // Auto-trigger simulation if redirected from an analysis result with state
+  // Auto-trigger simulation or analysis if redirected from an analysis result or sample card
   useEffect(() => {
-    if (feature === 'whatif' && analysis.state === 'idle') {
+    if (analysis.state === 'idle') {
       const incomingResult = location.state?.analysisResult;
-      if (incomingResult) {
+      const prefill = location.state?.prefillContent;
+      if (feature === 'whatif' && incomingResult) {
         analysis.simulate({
           analysis_id: incomingResult.id,
           analysis: incomingResult,
         });
+      } else if (prefill) {
+        if (feature === 'whatif') {
+          analysis.simulate({ description: prefill });
+        } else {
+          analysis.analyze(prefill, undefined, feature);
+        }
       }
     }
   }, [feature, location.state, analysis.state]);
