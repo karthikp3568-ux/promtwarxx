@@ -160,14 +160,14 @@ export default function HistoryPage() {
         </div>
       )}
 
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
-        <div className="flex items-center gap-3">
-          <div className="p-2.5 rounded-xl bg-primary/10 text-primary border border-primary/20">
-            <HistoryIcon className="w-6 h-6" />
+      <div className="glass-card p-6 sm:p-8 rounded-3xl border-white/20 mb-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xl">
+        <div className="flex items-center gap-3.5">
+          <div className="icon-tile icon-tile-gradient w-12 h-12 rounded-2xl flex items-center justify-center shrink-0">
+            <HistoryIcon className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-white">Investigation History</h1>
-            <p className="text-sm text-gray-400">Review past security scans, threat factors, and attack paths</p>
+            <h1 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">Investigation History</h1>
+            <p className="text-xs sm:text-sm text-gray-300">Review past security scans, threat factors, and attack paths</p>
           </div>
         </div>
 
@@ -175,7 +175,7 @@ export default function HistoryPage() {
           <button
             type="button"
             onClick={() => setConfirmClearOpen(true)}
-            className="flex items-center gap-2 text-sm text-gray-300 hover:text-red-400 bg-navy-800 hover:bg-navy-700 border border-navy-700 px-4 py-2 min-h-[44px] rounded-lg transition-colors"
+            className="btn-glass text-xs font-bold px-4 py-2 min-h-[44px] text-[#F43F5E] border-[#F43F5E]/30 hover:bg-[#F43F5E]/15 self-end sm:self-auto"
           >
             <Trash2 className="w-4 h-4" />
             <span>Clear All History</span>

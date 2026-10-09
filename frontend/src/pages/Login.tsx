@@ -45,14 +45,22 @@ export default function Login() {
         error={error}
       />
       <div className="mt-6 text-center text-sm text-gray-300 space-y-2">
-        <div>
-          Don't have an account?{' '}
-          <Link to="/register" onClick={clearError} className="text-primary hover:underline font-medium">
+        <div className="flex items-center justify-center">
+          <span>Don't have an account?</span>{' '}
+          <Link
+            to="/register"
+            onClick={clearError}
+            className="text-cyan hover:underline font-semibold ml-1.5 min-h-[44px] inline-flex items-center"
+          >
             Create an account
           </Link>
         </div>
-        <div>
-          <Link to="/reset-password" onClick={clearError} className="text-gray-400 hover:text-gray-300">
+        <div className="flex items-center justify-center">
+          <Link
+            to="/reset-password"
+            onClick={clearError}
+            className="text-gray-300 hover:text-white min-h-[44px] inline-flex items-center"
+          >
             Forgot your password?
           </Link>
         </div>

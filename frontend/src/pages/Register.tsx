@@ -42,10 +42,16 @@ export default function Register() {
         error={error}
       />
       <div className="mt-6 text-center text-sm text-gray-300">
-        Already have an account?{' '}
-        <Link to="/login" onClick={clearError} className="text-primary hover:underline font-medium">
-          Sign in
-        </Link>
+        <div className="flex items-center justify-center">
+          <span>Already have an account?</span>{' '}
+          <Link
+            to="/login"
+            onClick={clearError}
+            className="text-cyan hover:underline font-semibold ml-1.5 min-h-[44px] inline-flex items-center"
+          >
+            Sign in
+          </Link>
+        </div>
       </div>
     </div>
   );

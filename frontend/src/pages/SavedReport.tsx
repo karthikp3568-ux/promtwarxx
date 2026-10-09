@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { doc, getDoc } from 'firebase/firestore';
-import { ArrowLeft, GitBranch, AlertCircle, Loader2, Info } from 'lucide-react';
+import { ArrowLeft, GitBranch, AlertCircle, Loader2, ShieldCheck, Lock } from 'lucide-react';
 import { db } from '../firebase';
 import { useAuth } from '../auth/AuthProvider';
 import type { AnalysisResult } from '../api/types';
@@ -93,22 +93,24 @@ export default function SavedReport() {
 
   if (loading) {
     return (
-      <div className="min-h-[50vh] flex flex-col items-center justify-center gap-3">
+      <div className="min-h-[50dvh] flex flex-col items-center justify-center gap-3">
         <Loader2 className="w-8 h-8 text-primary animate-spin" />
-        <p className="text-sm text-gray-400">Loading saved report...</p>
+        <p className="text-sm text-gray-300">Loading saved report...</p>
       </div>
     );
   }
 
   if (error || !record) {
     return (
-      <div className="w-full max-w-xl mx-auto py-12 text-center">
-        <AlertCircle className="w-12 h-12 text-risk-high mx-auto mb-4" />
-        <h2 className="text-xl font-bold text-white mb-2">Report Not Available</h2>
-        <p className="text-gray-400 mb-6">{error || 'Could not find this saved report.'}</p>
+      <div className="w-full max-w-xl mx-auto py-12 text-center glass-card rounded-3xl p-8 border-white/20">
+        <div className="w-12 h-12 rounded-2xl bg-[#F43F5E]/20 flex items-center justify-center mx-auto mb-4">
+          <AlertCircle className="w-6 h-6 text-[#F43F5E]" />
+        </div>
+        <h2 className="text-xl font-extrabold text-white mb-2">Report Not Available</h2>
+        <p className="text-gray-300 mb-6 text-sm">{error || 'Could not find this saved report.'}</p>
         <Link
           to="/history"
-          className="inline-flex items-center gap-2 px-5 py-2.5 min-h-[44px] bg-navy-800 hover:bg-navy-700 text-white rounded-lg transition-colors text-sm font-medium"
+          className="btn-glass inline-flex items-center gap-2 px-6 py-2.5 min-h-[44px] text-white text-sm font-semibold"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to History
@@ -119,10 +121,10 @@ export default function SavedReport() {
 
   return (
     <div className="w-full space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <button
           onClick={() => navigate('/history')}
-          className="flex items-center gap-2 text-sm font-medium text-gray-300 hover:text-white transition-colors min-h-[44px] px-2"
+          className="btn-glass flex items-center gap-2 text-sm font-semibold text-gray-200 hover:text-white min-h-[44px] px-4 py-2"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to History
@@ -130,20 +132,27 @@ export default function SavedReport() {
 
         <Link
           to={`/check/whatif?analysis_id=${record.id}`}
-          className="flex items-center gap-2 px-3 py-1.5 bg-purple-900/60 hover:bg-purple-800/80 border border-purple-700 text-purple-200 text-sm font-medium rounded-lg transition-colors"
+          className="btn-primary flex items-center gap-2 px-5 py-2.5 min-h-[44px] text-sm font-bold shadow-lg"
         >
           <GitBranch className="w-4 h-4" />
-          Simulate Attack Path
+          <span>Simulate Attack Path</span>
         </Link>
       </div>
 
       {/* Required privacy disclosure */}
-      <div className="flex items-start gap-3 bg-navy-800/80 border border-navy-700 rounded-xl p-4 text-sm text-gray-300">
-        <Info className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+      <div className="glass-card rounded-2xl border-white/15 p-4 flex items-start gap-3.5 text-sm text-gray-200 shadow-md">
+        <div className="w-8 h-8 rounded-xl bg-primary/20 flex items-center justify-center shrink-0 mt-0.5">
+          <Lock className="w-4 h-4 text-primary" />
+        </div>
         <div>
-          <span className="font-semibold text-white">Saved report — original content not stored.</span>
-          <p className="text-xs text-gray-400 mt-0.5">
-            For privacy, raw text, uploaded files, and phone recordings are never saved. Only the security indicators and risk assessment are preserved.
+          <div className="flex items-center gap-2">
+            <span className="font-bold text-white">Saved report — original content not stored</span>
+            <span className="glass-pill text-[11px] px-2 py-0.5 text-emerald-300 border-emerald-500/30 flex items-center gap-1">
+              <ShieldCheck className="w-3 h-3" /> Zero Retention
+            </span>
+          </div>
+          <p className="text-xs text-gray-300 mt-1 leading-relaxed">
+            For your security and privacy, raw conversation text, uploaded files, and voice recordings are never stored on servers or database records. Only the cryptographic risk score, signal taxonomy breakdown, and defensive recommendations are preserved.
           </p>
         </div>
       </div>

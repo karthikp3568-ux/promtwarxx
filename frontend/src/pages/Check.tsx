@@ -179,19 +179,26 @@ export default function Check() {
   };
 
   return (
-    <div className="w-full">
-      <div className="mb-6 sm:mb-8">
-        <div className="flex items-center gap-3 mb-2">
-          <Icon className="w-8 h-8 text-primary shrink-0" />
-          <h1 className="text-xl sm:text-2xl font-bold text-white">{config.title}</h1>
+    <div className="w-full max-w-4xl mx-auto space-y-6 sm:space-y-8 animate-fadeIn">
+      {/* Feature Header Card */}
+      <div className="glass-card p-6 sm:p-8 rounded-3xl border-white/20 shadow-xl">
+        <div className="flex items-center gap-3.5 mb-2">
+          <div className="icon-tile icon-tile-gradient w-12 h-12 rounded-2xl flex items-center justify-center shrink-0">
+            <Icon className="w-6 h-6 text-white" />
+          </div>
+          <div>
+            <h1 className="text-xl sm:text-3xl font-extrabold text-white tracking-tight">{config.title}</h1>
+            <p className="text-xs sm:text-sm text-gray-300">{config.subtitle}</p>
+          </div>
         </div>
-        <p className="text-sm sm:text-base text-gray-400">{config.subtitle}</p>
-        <p className="text-base sm:text-lg text-primary mt-2 font-medium">{config.question}</p>
+        <p className="text-base sm:text-xl font-bold text-gradient-primary mt-3 tracking-tight">
+          {config.question}
+        </p>
       </div>
 
       {/* Input phase */}
       {analysis.state === 'idle' && (
-        <div className="w-full">
+        <div className="w-full space-y-4">
           <UploadZone
             acceptsText={config.acceptsText}
             acceptsImage={config.acceptsImage}
@@ -202,7 +209,7 @@ export default function Check() {
             onFileSubmit={handleFileSubmit}
           />
           {config.sampleName && (
-            <div className="mt-4 text-center">
+            <div className="text-center pt-2">
               <SampleButton onClick={handleSample} loading={sampleLoading} />
             </div>
           )}
@@ -211,7 +218,7 @@ export default function Check() {
 
       {/* Analysis in progress */}
       {analysis.state === 'analyzing' && (
-        <div className="bg-navy-800 rounded-xl p-4 sm:p-6 border border-navy-700">
+        <div className="glass-card rounded-3xl p-6 sm:p-8 border-white/25 shadow-2xl">
           <InvestigationTimeline stages={analysis.stages} />
         </div>
       )}
@@ -225,16 +232,16 @@ export default function Check() {
       {analysis.state === 'done' && analysis.simulation && (
         <div className="space-y-6">
           <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-white flex items-center gap-2">
-              <GitBranch className="w-5 h-5 text-primary" />
-              Hypothetical Attack Progression
+            <h2 className="text-lg sm:text-xl font-extrabold text-white flex items-center gap-2">
+              <GitBranch className="w-5 h-5 text-cyan" />
+              <span>Hypothetical Attack Progression</span>
             </h2>
             <button
               onClick={analysis.reset}
-              className="flex items-center gap-2 px-4 py-2 text-sm text-gray-300 hover:text-white bg-navy-800 hover:bg-navy-700 border border-navy-700 rounded-lg transition-colors min-h-[40px]"
+              className="btn-glass text-xs font-semibold px-4 py-2 min-h-[40px] text-gray-200 hover:text-white"
             >
-              <RotateCcw className="w-4 h-4" />
-              New simulation
+              <RotateCcw className="w-4 h-4 text-cyan" />
+              <span>New Simulation</span>
             </button>
           </div>
           <AttackPath simulation={analysis.simulation} />
