@@ -2,7 +2,6 @@
 import json
 import logging
 import time
-from typing import AsyncGenerator
 
 from schemas import StageEvent, ResultEvent, ErrorEvent, AnalysisResult
 from errors import TrustGuardError

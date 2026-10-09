@@ -1,5 +1,4 @@
 """QR & Payment Scam Detector router."""
-import asyncio
 import json
 import logging
 from fastapi import APIRouter, Form, UploadFile, File, Request, Depends
@@ -14,21 +13,18 @@ from schemas import (
     ExtractedData,
     PaymentDetails,
     Factor,
-    FactorSource,
-    Severity,
     AIAssessment,
     SaveEvent,
-    UrlFinding,
 )
 from services.pipeline import PipelineContext, ndjson_line, stream_error
 from services.auth import get_current_user
 from services.history_store import save_analysis_result
 from services.qr_decoder import decode_qr
 from services.upi_parser import parse_upi_uri
-from services.url_inspector import inspect_url, static_checks
+from services.url_inspector import inspect_url
 from services.file_validation import validate_file, validate_text, IMAGE_TYPES
 from services.gemini_client import generate_structured
-from services.prompts import load_prompt, format_untrusted
+from services.prompts import load_prompt
 from services.risk_engine import score_risk
 from services.demo_cache import find_matching_sample
 
@@ -56,7 +52,7 @@ async def _run_payment_analysis(
                 raise TrustGuardError(ErrorCode.NO_QR_FOUND)
 
         # Stage: checking payment structure & destination
-        yield await ctx.emit_stage("checking", f"Analyzing payment destination and parameters")
+        yield await ctx.emit_stage("checking", "Analyzing payment destination and parameters")
         deterministic_factors: list[Factor] = []
         payment_details = None
         url_findings = []

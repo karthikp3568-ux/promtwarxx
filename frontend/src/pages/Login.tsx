@@ -9,7 +9,7 @@ export default function Login() {
   const location = useLocation();
   const [loading, setLoading] = useState(false);
 
-  const from = (location.state as any)?.from?.pathname || '/';
+  const from = (location.state as { from?: { pathname?: string } } | null)?.from?.pathname || '/';
 
   const handleLogin = async (email: string, pass: string) => {
     setLoading(true);

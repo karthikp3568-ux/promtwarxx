@@ -18,18 +18,17 @@ from schemas import (
     FactorSource,
     Severity,
     AIAssessment,
-    Hint,
     SaveEvent,
 )
 from services.pipeline import PipelineContext, ndjson_line, stream_error
 from services.auth import get_current_user
 from services.history_store import save_analysis_result
 from services.gemini_client import generate_structured, generate_text
-from services.prompts import load_prompt, format_untrusted, get_prompt_version
+from services.prompts import load_prompt
 from services.text_extractors import extract_all, escape_untrusted_tags
-from services.url_inspector import inspect_url, static_checks
+from services.url_inspector import inspect_url
 from services.file_validation import validate_file, validate_text, IMAGE_TYPES
-from services.signals import SIGNAL_TABLE, SignalCategory, compute_weight
+from services.signals import SIGNAL_TABLE, compute_weight
 from services.risk_engine import score_risk
 from services.demo_cache import find_matching_sample, get_cached_sample_result
 

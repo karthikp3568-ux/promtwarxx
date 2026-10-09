@@ -2,7 +2,7 @@
 import re
 from urllib.parse import urlparse, parse_qs
 from dataclasses import dataclass, field
-from schemas import PaymentDetails, Factor, Severity, FactorSource
+from schemas import Factor, Severity, FactorSource
 from services.signals import SIGNAL_TABLE, compute_weight
 
 

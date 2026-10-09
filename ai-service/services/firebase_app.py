@@ -8,7 +8,7 @@ import os
 from typing import Optional
 
 import firebase_admin
-from firebase_admin import credentials, firestore, auth
+from firebase_admin import credentials, firestore
 import google.auth.credentials
 from google.cloud.firestore import Client as FirestoreClient
 

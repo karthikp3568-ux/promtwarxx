@@ -51,13 +51,13 @@ export default function HistoryPage() {
           riskScore: d.riskScore ?? null,
           riskLevel: d.riskLevel ?? null,
           summary: d.summary || 'Analysis report',
-          topIndicators: d.topIndicators || (d.factors || []).slice(0, 3).map((f: any) => f.title || f.code),
+          topIndicators: d.topIndicators || (d.factors || []).slice(0, 3).map((f: { title?: string; code?: string }) => f.title || f.code),
         };
       });
 
       setItems(loaded);
-    } catch (e: any) {
-      setError(e.message || 'Failed to load analysis history');
+    } catch (e: unknown) {
+      setError((e instanceof Error && e.message) || 'Failed to load analysis history');
     } finally {
       setLoading(false);
     }
@@ -126,8 +126,8 @@ export default function HistoryPage() {
       } else {
         setError('Failed to delete report.');
       }
-    } catch (e: any) {
-      setError(e.message || 'Failed to delete report.');
+    } catch (e: unknown) {
+      setError((e instanceof Error && e.message) || 'Failed to delete report.');
     }
   };
 
@@ -147,8 +147,8 @@ export default function HistoryPage() {
       } else {
         setError('Failed to clear history.');
       }
-    } catch (e: any) {
-      setError(e.message || 'Failed to clear history.');
+    } catch (e: unknown) {
+      setError((e instanceof Error && e.message) || 'Failed to clear history.');
     } finally {
       setActionLoading(false);
     }

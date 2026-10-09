@@ -4,7 +4,6 @@ import logging
 from PIL import Image
 import zxingcpp
 
-from errors import TrustGuardError, ErrorCode
 
 logger = logging.getLogger(__name__)
 

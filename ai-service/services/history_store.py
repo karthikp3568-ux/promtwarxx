@@ -8,10 +8,10 @@ Handles:
 """
 import logging
 import time
-from typing import Any, Optional
+from typing import Any
 from google.cloud import firestore
 
-from schemas import AnalysisResult, FeatureType
+from schemas import AnalysisResult
 from services.firebase_app import get_firestore_db
 from services.redaction import redact_text, redact_data_structure
 

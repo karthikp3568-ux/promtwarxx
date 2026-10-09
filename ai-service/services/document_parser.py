@@ -5,7 +5,7 @@ from dataclasses import dataclass, field
 import pypdf
 
 from errors import TrustGuardError, ErrorCode
-from schemas import DocumentDetails, Factor, Severity, FactorSource
+from schemas import Factor, Severity, FactorSource
 from services.signals import SIGNAL_TABLE, compute_weight
 
 logger = logging.getLogger(__name__)

@@ -12,9 +12,6 @@ from schemas import (
     AnalysisResult,
     AnalysisMeta,
     ExtractedData,
-    VoiceDetails,
-    Factor,
-    Severity,
     AIAssessment,
     SaveEvent,
 )
@@ -26,7 +23,7 @@ from services.voice_detector import analyze_voice_clip
 from services.file_validation import validate_file, AUDIO_TYPES
 from services.text_extractors import extract_all, escape_untrusted_tags
 from services.gemini_client import generate_structured, generate_text
-from services.prompts import load_prompt, format_untrusted
+from services.prompts import load_prompt
 from services.risk_engine import score_risk
 from services.demo_cache import find_matching_sample, get_cached_sample_result
 

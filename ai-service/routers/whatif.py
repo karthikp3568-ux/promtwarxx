@@ -3,7 +3,7 @@ import json
 import logging
 import uuid
 from typing import Any, Optional
-from fastapi import APIRouter, Depends, Request
+from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 from google.cloud import firestore
 

@@ -12,8 +12,6 @@ from schemas import (
     AnalysisMeta,
     ExtractedData,
     DocumentDetails,
-    Factor,
-    Severity,
     AIAssessment,
     SaveEvent,
     UrlFinding,
@@ -22,11 +20,11 @@ from services.pipeline import PipelineContext, ndjson_line, stream_error
 from services.auth import get_current_user
 from services.history_store import save_analysis_result
 from services.document_parser import parse_pdf
-from services.file_validation import validate_file, DOCUMENT_TYPES, IMAGE_TYPES, ALL_TYPES
+from services.file_validation import validate_file, DOCUMENT_TYPES, IMAGE_TYPES
 from services.text_extractors import extract_all, escape_untrusted_tags
 from services.url_inspector import inspect_url
 from services.gemini_client import generate_structured, generate_text
-from services.prompts import load_prompt, format_untrusted
+from services.prompts import load_prompt
 from services.risk_engine import score_risk
 from services.redaction import redact_text
 from services.demo_cache import find_matching_sample

@@ -214,7 +214,7 @@ def _apply_cross_evidence(factor_map: dict[str, Factor]) -> int:
         bonus = min(10, 25 - total_bonus)
         if bonus > 0:
             total_bonus += bonus
-            factor_map[f"COMBINED_PATTERN_R1"] = Factor(
+            factor_map["COMBINED_PATTERN_R1"] = Factor(
                 code="COMBINED_PATTERN",
                 category="Pattern",
                 severity=Severity.HIGH,
@@ -232,7 +232,7 @@ def _apply_cross_evidence(factor_map: dict[str, Factor]) -> int:
         bonus = min(12, 25 - total_bonus)
         if bonus > 0:
             total_bonus += bonus
-            factor_map[f"COMBINED_PATTERN_R2"] = Factor(
+            factor_map["COMBINED_PATTERN_R2"] = Factor(
                 code="COMBINED_PATTERN",
                 category="Pattern",
                 severity=Severity.HIGH,
@@ -249,7 +249,7 @@ def _apply_cross_evidence(factor_map: dict[str, Factor]) -> int:
         bonus = min(15, 25 - total_bonus)
         if bonus > 0:
             total_bonus += bonus
-            factor_map[f"COMBINED_PATTERN_R3"] = Factor(
+            factor_map["COMBINED_PATTERN_R3"] = Factor(
                 code="COMBINED_PATTERN",
                 category="Pattern",
                 severity=Severity.HIGH,
