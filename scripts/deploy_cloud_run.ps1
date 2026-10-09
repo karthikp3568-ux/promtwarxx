@@ -1,4 +1,4 @@
-﻿# ==============================================================================
+# ==============================================================================
 # TrustGuard AI â€” Deploy Backend to Google Cloud Run (PowerShell)
 # Project: promtwars-745af
 # ==============================================================================
@@ -84,7 +84,7 @@ $serviceUrl = (& gcloud run services describe $ServiceName --platform managed --
 # 6. Verify Health Endpoint
 Write-Host "`n[5/5] Running live health check on $serviceUrl/health..." -ForegroundColor Yellow
 try {
-    $healthRes = Invoke-RestMethod -Uri "$serviceUrl/health" -Method Get -TimeoutSec 15
+    $healthRes = Invoke-RestMethod -Uri "$serviceUrl/api/health" -Method Get -TimeoutSec 15
     Write-Host "Health Check Passed! Status: $($healthRes.status)" -ForegroundColor Green
 } catch {
     Write-Host "Warning: Initial health check did not return 200 OK ($($_.Exception.Message))." -ForegroundColor Red

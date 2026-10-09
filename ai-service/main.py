@@ -81,6 +81,13 @@ app.include_router(voice.router)
 app.include_router(whatif.router)
 app.include_router(history.router)
 
+
+@app.get("/health", tags=["health"])
+async def root_health():
+    """Root health probe for Cloud Run and container platforms."""
+    return await health.health()
+
+
 # Mount verified demo samples for static asset previews in frontend
 import os
 from fastapi.staticfiles import StaticFiles
