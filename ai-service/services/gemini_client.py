@@ -86,7 +86,7 @@ async def generate_structured(
                 try:
                     result = response_model.model_validate_json(response.text)
                     return result
-                except ValidationError as e:
+                except ValidationError:
                     logger.warning(f"Gemini response validation failed attempt={attempt}")
                     if attempt < MAX_RETRIES:
                         continue
