@@ -4,7 +4,7 @@ import { doc, getDoc } from 'firebase/firestore';
 import { ArrowLeft, GitBranch, AlertCircle, Loader2, ShieldCheck, Lock } from 'lucide-react';
 import { db } from '../firebase';
 import { useAuth } from '../auth/AuthProvider';
-import type { AnalysisResult } from '../api/types';
+import type { AnalysisResult, Factor, Severity } from '../api/types';
 import AnalysisResultView from '../features/conversation/AnalysisResultView';
 
 export default function SavedReport() {
@@ -38,19 +38,19 @@ export default function SavedReport() {
           score: data.riskScore ?? null,
           level: data.riskLevel ?? null,
           confidence: data.confidence || 'MEDIUM',
-          factors: (data.evidence || data.factors || []).map((f: any) => ({
-            code: f.code,
+          factors: (data.evidence || data.factors || []).map((f: Partial<Factor> & { whyItMatters?: string; description?: string }) => ({
+            code: f.code || 'UNKNOWN',
             category: f.category || 'Pattern',
             severity: f.severity || 'MEDIUM',
             weight: f.weight ?? 0,
             source: f.source || 'ai',
-            title: f.title || f.code,
+            title: f.title || f.code || 'Indicator',
             why_it_matters: f.description || f.whyItMatters || f.why_it_matters || '',
             evidence: f.evidence || null,
           })),
           categories: data.categories || (data.riskCategories ? Object.entries(data.riskCategories).map(([cat, label]) => ({
             category: cat.charAt(0).toUpperCase() + cat.slice(1),
-            severity: label === 'NOT_DETECTED' ? null : (label as any),
+            severity: label === 'NOT_DETECTED' ? null : (label as Severity),
             label: label === 'NOT_DETECTED' ? 'Not detected' : String(label).charAt(0) + String(label).slice(1).toLowerCase(),
           })) : []),
           dismissed_hints: data.dismissed_hints || [],
@@ -60,7 +60,7 @@ export default function SavedReport() {
           contradictions: data.contradictions || [],
           attack_stage: data.attackStage || null,
           reasoning: data.reasoning || '',
-          recommendations: (data.recommendations || []).map((r: any) => typeof r === 'string' ? r : r.action || ''),
+          recommendations: (data.recommendations || []).map((r: string | { action?: string }) => typeof r === 'string' ? r : r.action || ''),
           summary: data.summary || '',
           extracted: data.extracted || {
             urls: [],
@@ -81,8 +81,8 @@ export default function SavedReport() {
           },
         };
         setRecord(reconstructed);
-      } catch (err: any) {
-        setError(err.message || 'Failed to load saved report.');
+      } catch (err: unknown) {
+        setError(err instanceof Error ? err.message : 'Failed to load saved report.');
       } finally {
         setLoading(false);
       }

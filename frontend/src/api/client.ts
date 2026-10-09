@@ -1,5 +1,6 @@
-import type { HealthStatus, StreamEvent, Simulation } from './types';
+import type { HealthStatus, StreamEvent, Simulation, AnalysisResult } from './types';
 import { auth } from '../firebase';
+
 
 const rawBase = import.meta.env.VITE_API_URL ? String(import.meta.env.VITE_API_URL).trim().replace(/\/+$/, '') : '';
 export const API_BASE = rawBase ? (rawBase.endsWith('/api') ? rawBase : `${rawBase}/api`) : '/api';
@@ -162,7 +163,7 @@ export async function* analyzeVoice(
 
 export async function simulateWhatIf(req: {
   analysis_id?: string;
-  analysis?: any;
+  analysis?: Partial<AnalysisResult> | Record<string, unknown>;
   description?: string;
 }): Promise<Simulation> {
   const headers = await getAuthHeaders();

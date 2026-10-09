@@ -62,7 +62,6 @@ async def generate_structured(
     if settings.gemini_model != "gemini-3.5-flash":
         candidate_models.append("gemini-3.5-flash")
 
-    last_error = None
     for model_name in candidate_models:
         for attempt in range(MAX_RETRIES + 1):
             try:
@@ -89,14 +88,12 @@ async def generate_structured(
                     return result
                 except ValidationError as e:
                     logger.warning(f"Gemini response validation failed attempt={attempt}")
-                    last_error = e
                     if attempt < MAX_RETRIES:
                         continue
                     break
 
             except asyncio.TimeoutError:
                 logger.warning(f"Gemini call timed out attempt={attempt} model={model_name}")
-                last_error = TimeoutError("Gemini call timed out")
                 if attempt < MAX_RETRIES:
                     continue
                 break
@@ -107,7 +104,6 @@ async def generate_structured(
             except Exception as e:
                 error_str = str(e).lower()
                 logger.warning(f"Gemini call failed attempt={attempt} model={model_name}: {type(e).__name__}: {e}")
-                last_error = e
 
                 if "429" in str(e) or "rate" in error_str or "quota" in error_str:
                     raise TrustGuardError(ErrorCode.AI_RATE_LIMITED, status_code=429)

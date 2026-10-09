@@ -59,7 +59,6 @@ def score_risk(
 
     # Step 2: Process hints
     dismissed: list[DismissedHint] = []
-    hint_map = {h.id: h for h in hints}
 
     if ai_assessment:
         review_map = {r.hint_id: r for r in ai_assessment.hint_reviews}
@@ -149,7 +148,7 @@ def score_risk(
                 _merge_factor(factor_map, f, allow_downgrade=False)
 
     # Step 4: Cross-evidence rules
-    combined_bonus = _apply_cross_evidence(factor_map)
+    _apply_cross_evidence(factor_map)
 
     # Step 5: Compute score
     factors = sorted(factor_map.values(), key=lambda f: f.weight, reverse=True)

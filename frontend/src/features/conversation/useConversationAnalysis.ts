@@ -94,7 +94,7 @@ export function useConversationAnalysis() {
     }
   }, []);
 
-  const simulate = useCallback(async (req: { analysis_id?: string; analysis?: any; description?: string }) => {
+  const simulate = useCallback(async (req: { analysis_id?: string; analysis?: Partial<AnalysisResult> | Record<string, unknown>; description?: string }) => {
     setState('analyzing');
     setResult(null);
     setSimulation(null);
