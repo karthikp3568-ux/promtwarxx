@@ -42,36 +42,38 @@ export default function ConfirmDialog({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-      <div className="bg-navy-800 border border-navy-600 rounded-2xl max-w-md w-full p-6 shadow-2xl">
-        <div className="flex items-center gap-3 mb-4 text-red-400">
-          <AlertTriangle className="w-6 h-6 shrink-0" />
-          <h3 className="text-lg font-bold text-white">{title}</h3>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md">
+      <div className="glass-strong border border-white/20 rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl">
+        <div className="flex items-center gap-3 mb-4 text-[#F43F5E]">
+          <div className="icon-tile w-10 h-10 rounded-xl bg-[#F43F5E]/20 flex items-center justify-center shrink-0">
+            <AlertTriangle className="w-5 h-5 text-[#F43F5E]" />
+          </div>
+          <h3 className="text-lg font-extrabold text-white tracking-tight">{title}</h3>
         </div>
 
-        <p className="text-sm text-gray-300 mb-6 leading-relaxed">{message}</p>
+        <p className="text-sm text-gray-200 mb-6 leading-relaxed">{message}</p>
 
         {requireTypedConfirmation && (
           <div className="mb-6">
-            <label className="block text-sm text-gray-300 font-medium mb-2">
-              Type <span className="font-mono text-white font-bold">{requireTypedConfirmation}</span> to confirm:
+            <label className="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-2">
+              Type <span className="font-mono text-cyan font-bold">{requireTypedConfirmation}</span> to confirm:
             </label>
             <input
               type="text"
               value={typed}
               onChange={(e) => setTyped(e.target.value)}
               placeholder={requireTypedConfirmation}
-              className="w-full bg-navy-900 border border-navy-600 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-2 focus:ring-red-500 font-mono min-h-[44px]"
+              className="w-full glass-reading border border-white/20 rounded-xl px-4 py-2.5 min-h-[44px] text-sm text-white focus:outline-none focus:border-cyan"
             />
           </div>
         )}
 
-        <div className="flex justify-end gap-3">
+        <div className="flex items-center justify-end gap-3 pt-2">
           <button
             type="button"
             onClick={onCancel}
             disabled={loading}
-            className="px-5 py-2.5 min-h-[44px] text-sm font-semibold text-gray-300 hover:text-white bg-navy-700 hover:bg-navy-600 rounded-xl transition-colors"
+            className="btn-glass text-sm px-5 py-2.5 min-h-[44px] text-gray-300 hover:text-white"
           >
             {cancelText}
           </button>
@@ -79,10 +81,10 @@ export default function ConfirmDialog({
             type="button"
             onClick={handleConfirm}
             disabled={!isConfirmed || loading}
-            className="px-5 py-2.5 min-h-[44px] text-sm text-white bg-red-600 hover:bg-red-500 disabled:opacity-50 font-semibold rounded-xl transition-colors flex items-center gap-2"
+            className="px-5 py-2.5 min-h-[44px] rounded-full text-sm font-bold text-white bg-[#F43F5E] hover:bg-rose-500 transition-colors shadow-lg disabled:opacity-50 flex items-center gap-2"
           >
             {loading && <Loader2 className="w-4 h-4 animate-spin" />}
-            {confirmText}
+            <span>{confirmText}</span>
           </button>
         </div>
       </div>

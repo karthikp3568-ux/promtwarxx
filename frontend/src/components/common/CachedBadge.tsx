@@ -2,9 +2,9 @@ import { Database } from 'lucide-react';
 
 export default function CachedBadge() {
   return (
-    <div className="inline-flex items-center gap-1.5 px-2 py-1 bg-blue-900/30 border border-blue-700/50 rounded text-xs text-blue-300">
-      <Database className="w-3 h-3" />
-      Cached demo result
+    <div className="glass-pill px-3 py-1 bg-cyan/15 border-cyan/40 text-xs font-semibold text-cyan inline-flex items-center gap-1.5 shadow-sm">
+      <Database className="w-3.5 h-3.5 text-cyan" />
+      <span>Cached Demo Result</span>
     </div>
   );
 }

@@ -72,7 +72,10 @@ const sampleHistoryItems = [
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="mb-12">
-      <h2 className="text-xl font-bold text-white mb-4 border-b border-navy-600 pb-2">{title}</h2>
+      <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 border-b border-white/15 pb-2.5 flex items-center justify-between">
+        <span>{title}</span>
+        <span className="text-xs font-mono text-cyan/70 font-normal uppercase tracking-wider">Design Token Test</span>
+      </h2>
       {children}
     </section>
   );
@@ -84,21 +87,21 @@ export default function DevComponents() {
   const [filterSort, setFilterSort] = useState<'newest' | 'oldest'>('newest');
 
   return (
-    <div className="w-full space-y-8">
-      <div className="bg-amber-900/30 border border-amber-700 rounded-lg p-4 mb-8">
-        <p className="text-sm text-amber-200">
-          Dev-only component gallery. This page is excluded from production builds.
+    <div className="w-full space-y-10 py-4">
+      <div className="glass-card rounded-2xl border-amber-500/40 p-4 sm:p-5 mb-8">
+        <p className="text-sm text-amber-200 font-medium">
+          🎨 Dev-only component gallery: testing bright colorful glass tokens, animated gradient blobs, fluid responsiveness, and accessibility contrast.
         </p>
       </div>
 
-      <Section title="RiskGauge">
+      <Section title="RiskGauge (All Risk Levels & Null)">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
           <RiskGauge score={15} level="LOW" />
           <RiskGauge score={45} level="MEDIUM" />
           <RiskGauge score={71} level="HIGH" />
           <RiskGauge score={92} level="CRITICAL" />
         </div>
-        <div className="mt-4">
+        <div className="mt-4 max-w-xs">
           <RiskGauge score={null} level={null} />
         </div>
       </Section>
@@ -107,7 +110,7 @@ export default function DevComponents() {
         <CategoryGrid categories={sampleCategories} />
       </Section>
 
-      <Section title="EvidenceCards">
+      <Section title="EvidenceCards (Ranked & Categorized)">
         <div className="space-y-3">
           {sampleFactors.map((f, i) => (
             <EvidenceCard key={`${f.code}-${i}`} factor={f} index={i} />
@@ -115,7 +118,7 @@ export default function DevComponents() {
         </div>
       </Section>
 
-      <Section title="ReasoningPanel">
+      <Section title="ReasoningPanel (Reading Glass High-Contrast Surface)">
         <ReasoningPanel reasoning={sampleResult.reasoning} factors={sampleFactors} />
       </Section>
 
@@ -127,17 +130,16 @@ export default function DevComponents() {
         <RecommendationList recommendations={sampleResult.recommendations} />
       </Section>
 
-      <Section title="AttackPath">
+      <Section title="AttackPath (Interactive Simulation Stages)">
         <AttackPath simulation={sampleSimulation} />
       </Section>
 
-      <Section title="InvestigationTimeline">
+      <Section title="InvestigationTimeline (Active Streaming Status)">
         <InvestigationTimeline stages={timelineStages} />
       </Section>
 
-      <Section title="UploadZone">
+      <Section title="UploadZone (Dropzone + Textarea + Fluid Action)">
         <div className="space-y-4">
-          <h3 className="text-sm text-gray-400">Text + Image</h3>
           <UploadZone
             acceptsText
             acceptsImage
@@ -148,7 +150,7 @@ export default function DevComponents() {
         </div>
       </Section>
 
-      <Section title="AskPanel">
+      <Section title="AskPanel (Stateless Q&A)">
         <AskPanel
           onAsk={async (q) => `This is a sample answer explaining why "${q}" matters based on verified indicators.`}
         />
@@ -169,12 +171,12 @@ export default function DevComponents() {
         <EntityList extracted={sampleExtracted} />
       </Section>
 
-      <Section title="SaveStatus & Badges">
+      <Section title="SaveStatus & Glass Badges">
         <div className="space-y-3">
           <SaveStatus status="saved" />
           <SaveStatus status="skipped" />
           <SaveStatus status="failed" onRetry={() => {}} />
-          <div className="flex items-center gap-4 pt-2">
+          <div className="flex flex-wrap items-center gap-4 pt-2">
             <SampleButton onClick={() => console.log('sample')} />
             <SampleButton onClick={() => {}} loading />
             <CachedBadge />
@@ -186,16 +188,13 @@ export default function DevComponents() {
         <div className="space-y-6">
           <GuestUpgradeBanner />
           <VerifyEmailBanner />
-          <div className="max-w-md bg-navy-800 p-6 rounded-xl border border-navy-700">
-            <h3 className="text-sm font-semibold text-white mb-4">Sample Auth Form</h3>
-            <AuthForm
-              mode="login"
-              onSubmit={async () => {}}
-              onGuestClick={async () => {}}
-              loading={false}
-              error={null}
-            />
-          </div>
+          <AuthForm
+            mode="login"
+            onSubmit={async () => {}}
+            onGuestClick={async () => {}}
+            loading={false}
+            error={null}
+          />
         </div>
       </Section>
 
@@ -219,14 +218,14 @@ export default function DevComponents() {
           <div>
             <button
               onClick={() => setConfirmOpen(true)}
-              className="px-4 py-2 bg-red-800 hover:bg-red-700 text-white text-sm rounded-lg"
+              className="btn-glass border-[#F43F5E]/40 text-[#F43F5E] hover:bg-[#F43F5E]/20 text-sm px-5 py-2.5 min-h-[44px]"
             >
               Open Sample Confirm Dialog
             </button>
             <ConfirmDialog
               isOpen={confirmOpen}
               title="Delete Sample Analysis"
-              message="Are you sure you want to delete this sample record?"
+              message="Are you sure you want to delete this sample record? This action cannot be undone."
               confirmText="Delete"
               onConfirm={async () => setConfirmOpen(false)}
               onCancel={() => setConfirmOpen(false)}
@@ -235,7 +234,7 @@ export default function DevComponents() {
         </div>
       </Section>
 
-      <Section title="ErrorState (all codes)">
+      <Section title="ErrorState (All Error Codes)">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {Object.keys(ERROR_INFO).map((code) => (
             <ErrorState key={code} code={code} onRetry={() => {}} />

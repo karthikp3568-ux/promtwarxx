@@ -28,10 +28,10 @@ export default function HistoryFilters({
             key={tab.id}
             type="button"
             onClick={() => onSelectFeature(tab.id)}
-            className={`text-sm font-medium px-3.5 py-2 min-h-[44px] rounded-lg transition-colors flex items-center ${
+            className={`text-sm font-semibold px-4 py-2 min-h-[44px] rounded-full transition-all flex items-center ${
               selectedFeature === tab.id
-                ? 'bg-primary text-white shadow-sm'
-                : 'bg-navy-800 text-gray-300 hover:text-white hover:bg-navy-700'
+                ? 'btn-primary shadow-md'
+                : 'btn-glass text-gray-300 hover:text-white'
             }`}
           >
             {tab.label}
@@ -42,10 +42,10 @@ export default function HistoryFilters({
       <button
         type="button"
         onClick={onToggleSort}
-        className="text-sm bg-navy-800 hover:bg-navy-700 border border-navy-700 text-gray-200 px-4 py-2 min-h-[44px] rounded-lg transition-colors flex items-center gap-1.5 self-end sm:self-auto"
+        className="btn-glass text-sm px-4 py-2 min-h-[44px] rounded-full flex items-center gap-1.5 self-end sm:self-auto text-gray-200"
       >
         <span className="text-gray-400">Sort:</span>
-        <span className="font-semibold text-white capitalize">{sortOrder}</span>
+        <span className="font-bold text-white capitalize">{sortOrder}</span>
       </button>
     </div>
   );

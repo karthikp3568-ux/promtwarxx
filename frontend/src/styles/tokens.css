@@ -17,11 +17,16 @@
   /* Glass surfaces */
   --glass: rgba(255, 255, 255, 0.10);
   --glass-strong: rgba(255, 255, 255, 0.16);
-  --glass-reading: rgba(15, 18, 50, 0.55);
+  --glass-reading: rgba(15, 18, 50, 0.65);
   --glass-border: rgba(255, 255, 255, 0.22);
   --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.30);
   --glass-blur: blur(18px) saturate(160%);
   --glass-shadow: 0 8px 32px rgba(8, 10, 40, 0.35);
+
+  /* Fallback surface for non-backdrop-filter or reduced transparency */
+  --glass-fallback: #13193e;
+  --glass-strong-fallback: #18204c;
+  --glass-reading-fallback: #0f1334;
 
   /* Typography colors */
   --text: #FFFFFF;
@@ -33,10 +38,19 @@
   --cyan: #22D3EE;
   --pink: #F472B6;
   --gradient-primary: linear-gradient(135deg, #4F8BFF 0%, #A855F7 55%, #F472B6 100%);
+  --gradient-mesh-accent: linear-gradient(135deg, rgba(79, 139, 255, 0.25) 0%, rgba(168, 85, 247, 0.25) 50%, rgba(244, 114, 182, 0.25) 100%);
 
   /* Risk colors */
   --risk-low: #34D399;
   --risk-medium: #FBBF24;
   --risk-high: #FB923C;
   --risk-critical: #F43F5E;
+
+  /* Risk & Accent Glows */
+  --glow-low: 0 0 28px rgba(52, 211, 153, 0.45);
+  --glow-medium: 0 0 28px rgba(251, 191, 36, 0.45);
+  --glow-high: 0 0 28px rgba(251, 146, 60, 0.45);
+  --glow-critical: 0 0 28px rgba(244, 63, 94, 0.45);
+  --glow-primary: 0 0 24px rgba(168, 85, 247, 0.45);
+  --glow-cyan: 0 0 20px rgba(34, 211, 238, 0.45);
 }

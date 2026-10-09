@@ -20,18 +20,18 @@ export default function EntityList({ extracted }: EntityListProps) {
   if (sections.length === 0) return null;
 
   return (
-    <div className="bg-navy-800 rounded-xl border border-navy-600 p-4">
-      <h3 className="text-sm font-semibold text-white mb-3">Extracted Data</h3>
-      <div className="space-y-3">
+    <div className="glass-card rounded-2xl border border-white/20 p-5">
+      <h3 className="text-sm font-bold text-white mb-3.5 tracking-tight">Extracted Artifacts & Indicators</h3>
+      <div className="space-y-3.5">
         {sections.map(s => (
           <div key={s.key}>
-            <div className="flex items-center gap-1.5 mb-1">
-              <s.icon className="w-3.5 h-3.5 text-gray-500" />
-              <span className="text-sm text-gray-400 font-semibold">{s.label}</span>
+            <div className="flex items-center gap-1.5 mb-1.5">
+              <s.icon className="w-3.5 h-3.5 text-cyan" />
+              <span className="text-xs text-gray-300 font-bold uppercase tracking-wider">{s.label}</span>
             </div>
-            <div className="flex flex-wrap gap-1.5">
+            <div className="flex flex-wrap gap-2">
               {s.items.map((item, i) => (
-                <span key={i} className="text-sm bg-navy-700 text-gray-200 px-2.5 py-1 rounded font-mono">
+                <span key={i} className="glass-pill px-3 py-1 text-xs text-gray-100 font-mono border-white/20">
                   {item}
                 </span>
               ))}

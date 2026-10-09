@@ -11,10 +11,10 @@ export default function SampleButton({ onClick, loading = false, label = 'Try a 
     <button
       onClick={onClick}
       disabled={loading}
-      className="inline-flex items-center gap-2 px-5 py-2.5 min-h-[44px] bg-navy-700 hover:bg-navy-600 border border-navy-600 text-gray-200 hover:text-white rounded-xl text-sm font-medium transition-colors disabled:opacity-50"
+      className="btn-glass text-sm px-5 py-2 min-h-[44px] text-gray-100 hover:text-white"
     >
-      <FlaskConical className="w-4 h-4 text-primary" />
-      {loading ? 'Loading sample...' : label}
+      <FlaskConical className="w-4 h-4 text-cyan" />
+      <span>{loading ? 'Loading sample...' : label}</span>
     </button>
   );
 }

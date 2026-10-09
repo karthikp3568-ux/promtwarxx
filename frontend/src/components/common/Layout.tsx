@@ -16,26 +16,36 @@ export default function Layout() {
   const { user, isGuest } = useAuth();
 
   return (
-    <div className="min-h-dvh text-white flex flex-col">
-      <nav className="bg-navy-800/80 backdrop-blur-md border-b border-navy-600 sticky top-0 z-50">
+    <div className="min-h-dvh text-white flex flex-col relative">
+      {/* Animated Vivid Mesh Background Blobs */}
+      <div className="bg-blob-container" aria-hidden="true">
+        <div className="bg-blob bg-blob-1" />
+        <div className="bg-blob bg-blob-2" />
+        <div className="bg-blob bg-blob-3" />
+      </div>
+
+      {/* Sticky Frosted Glass Navigation Bar */}
+      <nav className="sticky top-0 z-50 glass-strong border-b border-white/15 backdrop-blur-md">
         <div className="w-[min(100%-2rem,1280px)] mx-auto px-2 sm:px-4 h-16 flex items-center justify-between">
-          <NavLink to="/" className="flex items-center gap-2 text-white font-semibold min-h-[44px] min-w-[44px]">
-            <Shield className="w-6 h-6 text-primary shrink-0" />
-            <span className="text-lg font-bold">TrustGuard AI</span>
+          <NavLink to="/" className="flex items-center gap-2.5 text-white font-semibold min-h-[44px] min-w-[44px] group">
+            <div className="icon-tile icon-tile-gradient w-9 h-9 rounded-xl flex items-center justify-center transition-transform group-hover:scale-105">
+              <Shield className="w-5 h-5 text-white shrink-0" />
+            </div>
+            <span className="text-lg font-bold tracking-tight">TrustGuard <span className="text-gradient-primary">AI</span></span>
           </NavLink>
 
           {/* Desktop nav */}
-          <div className="hidden md:flex items-center gap-1">
+          <div className="hidden md:flex items-center gap-1.5">
             {navLinks.map((link) => (
               <NavLink
                 key={link.to}
                 to={link.to}
                 end={link.end}
                 className={({ isActive }) =>
-                  `px-3 py-2 rounded-lg text-sm font-medium transition-colors min-h-[40px] flex items-center ${
+                  `px-3.5 py-2 rounded-full text-sm font-medium transition-all min-h-[40px] flex items-center ${
                     isActive
-                      ? 'bg-navy-700 text-white'
-                      : 'text-gray-300 hover:text-white hover:bg-navy-700/50'
+                      ? 'glass-pill bg-white/15 text-white border-white/30 shadow-sm'
+                      : 'text-gray-300 hover:text-white hover:bg-white/10'
                   }`
                 }
               >
@@ -43,19 +53,19 @@ export default function Layout() {
               </NavLink>
             ))}
 
-            <div className="ml-3 pl-3 border-l border-navy-700 flex items-center gap-2">
+            <div className="ml-3 pl-3 border-l border-white/15 flex items-center gap-2">
               {user ? (
                 <Link
                   to="/settings"
-                  className="flex items-center gap-1.5 px-3 py-1.5 text-sm rounded-full bg-navy-700 hover:bg-navy-600 text-gray-200 transition-colors min-h-[40px]"
+                  className="btn-glass text-sm px-3.5 py-1.5 min-h-[40px] text-gray-200"
                 >
-                  <User className="w-4 h-4 text-primary" />
+                  <User className="w-4 h-4 text-cyan" />
                   <span>{isGuest ? 'Guest' : (user.email?.split('@')[0] || 'Account')}</span>
                 </Link>
               ) : (
                 <Link
                   to="/login"
-                  className="px-4 py-2 text-sm font-semibold rounded-lg bg-primary hover:bg-primary-hover text-white transition-colors min-h-[40px] flex items-center"
+                  className="btn-primary text-sm px-4 py-1.5 min-h-[40px]"
                 >
                   Sign In
                 </Link>
@@ -66,7 +76,7 @@ export default function Layout() {
           {/* Mobile menu button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2.5 text-gray-300 hover:text-white min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg"
+            className="md:hidden p-2.5 text-gray-300 hover:text-white min-h-[44px] min-w-[44px] flex items-center justify-center rounded-xl glass-pill"
             aria-label="Toggle menu"
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -75,7 +85,7 @@ export default function Layout() {
 
         {/* Mobile menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden border-t border-navy-600 py-3 px-4 space-y-2 bg-navy-800">
+          <div className="md:hidden border-t border-white/15 py-3 px-4 space-y-2 glass-strong">
             {navLinks.map((link) => (
               <NavLink
                 key={link.to}
@@ -83,8 +93,8 @@ export default function Layout() {
                 end={link.end}
                 onClick={() => setMobileMenuOpen(false)}
                 className={({ isActive }) =>
-                  `block px-3 py-2.5 rounded-lg text-sm font-medium min-h-[44px] flex items-center ${
-                    isActive ? 'bg-navy-700 text-white' : 'text-gray-300 hover:text-white'
+                  `block px-3.5 py-2.5 rounded-xl text-sm font-medium min-h-[44px] flex items-center ${
+                    isActive ? 'bg-white/20 text-white font-semibold' : 'text-gray-300 hover:text-white hover:bg-white/10'
                   }`
                 }
               >
@@ -92,12 +102,12 @@ export default function Layout() {
               </NavLink>
             ))}
 
-            <div className="pt-2 border-t border-navy-700">
+            <div className="pt-2 border-t border-white/15">
               {user ? (
                 <Link
                   to="/settings"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="block px-3 py-2.5 rounded-lg text-sm text-gray-300 hover:text-white min-h-[44px] flex items-center"
+                  className="block px-3.5 py-2.5 rounded-xl text-sm text-gray-200 hover:text-white min-h-[44px] flex items-center"
                 >
                   Account: {isGuest ? 'Guest' : (user.email || 'Signed in')}
                 </Link>
@@ -105,7 +115,7 @@ export default function Layout() {
                 <Link
                   to="/login"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="block px-3 py-2.5 text-center rounded-lg text-sm font-semibold bg-primary text-white min-h-[44px] flex items-center justify-center"
+                  className="btn-primary w-full text-center text-sm min-h-[44px] flex items-center justify-center"
                 >
                   Sign In
                 </Link>
@@ -115,7 +125,8 @@ export default function Layout() {
         )}
       </nav>
 
-      <main className="page-container flex-1">
+      {/* Main Page Area */}
+      <main className="page-container flex-1 relative z-10">
         <VerifyEmailBanner />
         <Outlet />
       </main>

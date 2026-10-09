@@ -98,10 +98,11 @@ export default function UploadZone({
           onDragLeave={() => setDragOver(false)}
           onDrop={handleDrop}
           onClick={() => fileInputRef.current?.click()}
-          className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors
-            ${dragOver ? 'border-primary bg-primary/5' : 'border-navy-600 hover:border-primary/50'}
-            ${disabled ? 'opacity-50 cursor-not-allowed' : ''}
-          `}
+          className={`glass-card border-2 border-dashed rounded-3xl p-8 sm:p-10 text-center cursor-pointer transition-all duration-200 ${
+            dragOver
+              ? 'border-cyan bg-cyan/15 shadow-[0_0_24px_rgba(34,211,238,0.35)] scale-[1.01]'
+              : 'border-white/25 hover:border-cyan/70 hover:bg-white/10'
+          } ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
         >
           <input
             ref={fileInputRef}
@@ -111,39 +112,46 @@ export default function UploadZone({
             onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])}
             disabled={disabled}
           />
-          <Upload className="w-8 h-8 text-gray-400 mx-auto mb-3" />
-          <p className="text-sm font-medium text-gray-300 mb-1">{fileHint}</p>
-          <p className="text-sm text-gray-400">
-            Drag and drop, click to browse{acceptsImage ? ', or paste with Ctrl+V' : ''}
+          <div className="icon-tile icon-tile-gradient w-14 h-14 rounded-2xl mx-auto mb-4 flex items-center justify-center">
+            <Upload className="w-7 h-7 text-white" />
+          </div>
+          <p className="text-base font-bold text-white mb-1 tracking-tight">{fileHint}</p>
+          <p className="text-xs sm:text-sm text-gray-300">
+            Drag and drop, click to browse{acceptsImage ? ', or paste screenshot with Ctrl+V' : ''}
           </p>
         </div>
       )}
 
       {/* File preview */}
       {selectedFile && (
-        <div className="bg-navy-800 rounded-xl border border-navy-600 p-4">
+        <div className="glass-card rounded-2xl border border-white/20 p-4">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-3 min-w-0">
               {preview ? (
-                <Image className="w-5 h-5 text-primary shrink-0" />
+                <Image className="w-5 h-5 text-cyan shrink-0" />
               ) : selectedFile.name.endsWith('.pdf') ? (
-                <FileText className="w-5 h-5 text-primary shrink-0" />
+                <FileText className="w-5 h-5 text-cyan shrink-0" />
               ) : (
-                <Music className="w-5 h-5 text-primary shrink-0" />
+                <Music className="w-5 h-5 text-cyan shrink-0" />
               )}
               <div className="min-w-0">
-                <p className="text-sm text-white truncate font-medium">{selectedFile.name}</p>
-                <p className="text-sm text-gray-400">
+                <p className="text-sm text-white truncate font-semibold">{selectedFile.name}</p>
+                <p className="text-xs text-gray-300 font-mono">
                   {(selectedFile.size / 1024 / 1024).toFixed(2)} MB
                 </p>
               </div>
             </div>
-            <button onClick={clearFile} className="text-gray-400 hover:text-white p-2 min-h-[44px] min-w-[44px] flex items-center justify-center" disabled={disabled}>
+            <button
+              onClick={clearFile}
+              className="text-gray-400 hover:text-white p-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-xl glass-pill"
+              disabled={disabled}
+              aria-label="Remove uploaded file"
+            >
               <X className="w-5 h-5" />
             </button>
           </div>
           {preview && (
-            <img src={preview} alt="Preview" className="max-h-48 rounded-lg mx-auto" />
+            <img src={preview} alt="Preview" className="max-h-56 rounded-xl mx-auto border border-white/10" />
           )}
         </div>
       )}
@@ -154,14 +162,14 @@ export default function UploadZone({
           <textarea
             value={textInput}
             onChange={(e) => setTextInput(e.target.value)}
-            placeholder="Or paste your message text here..."
+            placeholder="Or paste message text, transaction details, or suspicious links here..."
             maxLength={10000}
             rows={5}
             disabled={disabled}
-            className="w-full bg-navy-800 border border-navy-600 rounded-xl p-4 text-sm text-white placeholder-gray-400 resize-none focus:outline-none focus:border-primary transition-colors disabled:opacity-50"
+            className="w-full glass-reading border border-white/20 rounded-2xl p-4 text-sm text-white placeholder-gray-400 resize-none focus:outline-none focus:border-cyan transition-colors disabled:opacity-50"
           />
           <div className="absolute bottom-3 right-3 flex items-center gap-2">
-            <span className="text-sm text-gray-400 font-mono">{textInput.length} / 10,000</span>
+            <span className="text-xs text-gray-400 font-mono">{textInput.length} / 10,000</span>
             {!textInput && (
               <Clipboard className="w-4 h-4 text-gray-400" />
             )}
@@ -174,9 +182,9 @@ export default function UploadZone({
         <button
           onClick={handleSubmit}
           disabled={disabled}
-          className="w-full py-3.5 min-h-[44px] bg-primary hover:bg-primary-hover text-white rounded-xl text-sm font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="btn-primary w-full py-3.5 text-base tracking-wide min-h-[48px]"
         >
-          Analyze
+          Analyze Content
         </button>
       )}
     </div>
