@@ -82,8 +82,8 @@ async def _run_document_analysis(
                 try:
                     _, finding = await inspect_url(u)
                     url_findings.append(finding)
-                except Exception:
-                    pass
+                except Exception as exc:  # noqa: BLE001 - one bad URL must not abort the scan
+                    logger.warning("URL inspection failed for %s: %s", u, exc)
 
         # Stage: reasoning (Gemini call 2)
         yield await ctx.emit_stage("reasoning", "Cross-referencing entities, official registries, and contradictions")

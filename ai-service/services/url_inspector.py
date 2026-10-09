@@ -61,10 +61,14 @@ def _has_userinfo(url: str) -> bool:
 def _get_registrable_domain(url: str) -> str:
     """Get registrable domain using tldextract with bundled suffix list (no network)."""
     ext = tldextract.extract(url, include_psl_private_domains=True)
-    rd = getattr(ext, 'top_domain_under_public_suffix', None) or getattr(ext, 'registered_domain', None)
+    if hasattr(ext, "top_domain_under_public_suffix"):
+        rd = ext.top_domain_under_public_suffix
+    else:
+        rd = getattr(ext, "registered_domain", None)
     if rd:
         return rd
     return ext.domain or ""
+
 
 
 def _is_shortener(domain: str) -> bool:
@@ -73,10 +77,7 @@ def _is_shortener(domain: str) -> bool:
 
 def _extract_title(html: bytes) -> str | None:
     """Extract <title> from HTML bytes."""
-    try:
-        text = html.decode("utf-8", errors="ignore")
-    except Exception:
-        return None
+    text = html.decode("utf-8", errors="ignore")
     match = re.search(r"<title[^>]*>(.*?)</title>", text, re.IGNORECASE | re.DOTALL)
     return match.group(1).strip()[:200] if match else None
 
@@ -220,8 +221,8 @@ async def inspect_url(url: str) -> tuple[list[str], UrlFinding]:
                             get_resp = await client.get(current_url)
                             content = get_resp.content[:MAX_TITLE_BYTES]
                             finding.page_title = _extract_title(content)
-                        except Exception:
-                            pass
+                        except httpx.HTTPError as exc:
+                            logger.debug("Title fetch failed for %s: %s", current_url, exc)
                     break
 
     except Exception as e:

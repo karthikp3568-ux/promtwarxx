@@ -144,8 +144,8 @@ export default function DevComponents() {
             acceptsText
             acceptsImage
             fileHint="Paste text or upload a screenshot (PNG, JPG, WEBP)"
-            onTextSubmit={(t) => console.log('Text:', t)}
-            onFileSubmit={(f) => console.log('File:', f)}
+            onTextSubmit={(t) => void t}
+            onFileSubmit={(f) => void f}
           />
         </div>
       </Section>
@@ -177,7 +177,7 @@ export default function DevComponents() {
           <SaveStatus status="skipped" />
           <SaveStatus status="failed" onRetry={() => {}} />
           <div className="flex flex-wrap items-center gap-4 pt-2">
-            <SampleButton onClick={() => console.log('sample')} />
+            <SampleButton onClick={() => undefined} />
             <SampleButton onClick={() => {}} loading />
             <CachedBadge />
           </div>
@@ -214,7 +214,7 @@ export default function DevComponents() {
             onSelectFeature={setFilterFeature}
             onToggleSort={() => setFilterSort((prev) => (prev === 'newest' ? 'oldest' : 'newest'))}
           />
-          <HistoryList items={sampleHistoryItems} onDeleteOne={(id) => console.log('Delete:', id)} />
+          <HistoryList items={sampleHistoryItems} onDeleteOne={(id) => void id} />
           <div>
             <button
               onClick={() => setConfirmOpen(true)}
