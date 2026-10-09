@@ -26,7 +26,7 @@ export default function AskPanel({ onAsk, disabled = false }: AskPanelProps) {
       const answer = await onAsk(qText.trim());
       setHistory((prev) => [...prev, { q: qText.trim(), a: answer }]);
       setQuestion('');
-    } catch (err: any) {
+    } catch {
       setHistory((prev) => [
         ...prev,
         { q: qText.trim(), a: 'Unable to get an answer right now. Please try again.' },

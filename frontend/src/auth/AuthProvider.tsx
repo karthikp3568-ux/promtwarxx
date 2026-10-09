@@ -83,8 +83,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setError(null);
     try {
       await signInWithEmailAndPassword(auth, email, pass);
-    } catch (err: any) {
-      const msg = getAuthErrorMessage(err.code);
+    } catch (err: unknown) {
+      const msg = getAuthErrorMessage((err as { code?: string }).code ?? '');
       setError(msg);
       throw new Error(msg);
     }
@@ -122,8 +122,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       } catch (e) {
         console.warn('Verification email send failed:', e);
       }
-    } catch (err: any) {
-      const msg = getAuthErrorMessage(err.code);
+    } catch (err: unknown) {
+      const msg = getAuthErrorMessage((err as { code?: string }).code ?? '');
       setError(msg);
       throw new Error(msg);
     }
@@ -133,8 +133,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setError(null);
     try {
       await signInAnonymously(auth);
-    } catch (err: any) {
-      const msg = getAuthErrorMessage(err.code);
+    } catch (err: unknown) {
+      const msg = getAuthErrorMessage((err as { code?: string }).code ?? '');
       setError(msg);
       throw new Error(msg);
     }
@@ -151,8 +151,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       } catch (e) {
         console.warn('Verification email send failed:', e);
       }
-    } catch (err: any) {
-      const msg = getAuthErrorMessage(err.code);
+    } catch (err: unknown) {
+      const msg = getAuthErrorMessage((err as { code?: string }).code ?? '');
       setError(msg);
       throw new Error(msg);
     }

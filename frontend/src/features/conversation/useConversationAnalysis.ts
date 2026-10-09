@@ -80,16 +80,16 @@ export function useConversationAnalysis() {
           setStages(prev => prev.map(s => ({ ...s, status: 'done' as const })));
           setResult(event.data);
           setState('done');
-        } else if ((event as any).type === 'save_status') {
-          const st = (event as any).status;
+        } else if ((event as { type: string }).type === 'save_status') {
+          const st = (event as unknown as { status?: string }).status;
           setSaveStatus(st === 'save_skipped' ? 'skipped' : st === 'save_failed' ? 'failed' : 'saved');
         } else if (event.type === 'error') {
           setError({ code: event.code, message: event.message });
           setState('error');
         }
       }
-    } catch (e: any) {
-      setError({ code: 'UNKNOWN', message: e.message || 'Connection lost. Please try again.' });
+    } catch (e: unknown) {
+      setError({ code: 'UNKNOWN', message: (e instanceof Error && e.message) || 'Connection lost. Please try again.' });
       setState('error');
     }
   }, []);
@@ -116,8 +116,8 @@ export function useConversationAnalysis() {
       ]);
       setSimulation(sim);
       setState('done');
-    } catch (e: any) {
-      setError({ code: 'SIMULATION_FAILED', message: e.message || 'Failed to simulate attack path.' });
+    } catch (e: unknown) {
+      setError({ code: 'SIMULATION_FAILED', message: (e instanceof Error && e.message) || 'Failed to simulate attack path.' });
       setState('error');
     }
   }, []);
