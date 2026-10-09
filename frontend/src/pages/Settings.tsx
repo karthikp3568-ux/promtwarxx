@@ -18,6 +18,8 @@ import {
 import { useAuth } from '../auth/AuthProvider';
 import ConfirmDialog from '../components/history/ConfirmDialog';
 import GuestUpgradeBanner from '../components/auth/GuestUpgradeBanner';
+import { API_BASE } from '../api/client';
+
 
 export default function Settings() {
   const { user, isGuest, profile, updatePreferences, signOut } = useAuth();
@@ -47,7 +49,7 @@ export default function Settings() {
     try {
       if (!user) return;
       const token = await user.getIdToken();
-      const res = await fetch('/api/history', {
+      const res = await fetch(`${API_BASE}/history`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${token}`,

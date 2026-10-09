@@ -81,7 +81,17 @@ app.include_router(voice.router)
 app.include_router(whatif.router)
 app.include_router(history.router)
 
+# Mount verified demo samples for static asset previews in frontend
+import os
+from fastapi.staticfiles import StaticFiles
+
+samples_path = os.path.join(os.path.dirname(__file__), "samples")
+if os.path.exists(samples_path):
+    app.mount("/api/samples", StaticFiles(directory=samples_path), name="samples")
+
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=False)
+

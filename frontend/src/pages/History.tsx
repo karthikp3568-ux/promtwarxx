@@ -8,6 +8,8 @@ import HistoryFilters from '../components/history/HistoryFilters';
 import HistoryList, { type HistoryItemData } from '../components/history/HistoryList';
 import ConfirmDialog from '../components/history/ConfirmDialog';
 import GuestUpgradeBanner from '../components/auth/GuestUpgradeBanner';
+import { API_BASE } from '../api/client';
+
 
 export default function HistoryPage() {
   const { user } = useAuth();
@@ -115,7 +117,7 @@ export default function HistoryPage() {
     if (!user) return;
     try {
       const token = await user.getIdToken();
-      const res = await fetch(`/api/history/${id}`, {
+      const res = await fetch(`${API_BASE}/history/${id}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -135,7 +137,7 @@ export default function HistoryPage() {
     setActionLoading(true);
     try {
       const token = await user.getIdToken();
-      const res = await fetch('/api/history', {
+      const res = await fetch(`${API_BASE}/history`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
       });

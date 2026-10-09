@@ -1,7 +1,10 @@
 import type { HealthStatus, StreamEvent, Simulation } from './types';
 import { auth } from '../firebase';
 
-const BASE = '/api';
+const rawBase = import.meta.env.VITE_API_URL ? String(import.meta.env.VITE_API_URL).trim().replace(/\/+$/, '') : '';
+export const API_BASE = rawBase ? (rawBase.endsWith('/api') ? rawBase : `${rawBase}/api`) : '/api';
+const BASE = API_BASE;
+
 
 async function getAuthHeaders(): Promise<Record<string, string>> {
   const user = auth.currentUser;

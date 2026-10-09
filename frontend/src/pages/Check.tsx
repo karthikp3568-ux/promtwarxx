@@ -8,7 +8,9 @@ import SampleButton from '../components/common/SampleButton';
 import AnalysisResultView from '../features/conversation/AnalysisResultView';
 import AttackPath from '../components/attack-path/AttackPath';
 import { useConversationAnalysis } from '../features/conversation/useConversationAnalysis';
+import { API_BASE } from '../api/client';
 import { useState, useEffect } from 'react';
+
 
 interface FeatureConfig {
   title: string;
@@ -138,7 +140,7 @@ export default function Check() {
     setSampleLoading(true);
     try {
       if (feature === 'conversation') {
-        const res = await fetch('/api/samples/kyc_block_sms.txt');
+        const res = await fetch(`${API_BASE}/samples/kyc_block_sms.txt`);
         if (res.ok) {
           const text = await res.text();
           analysis.analyze(text, undefined, 'conversation');
@@ -150,21 +152,21 @@ export default function Check() {
         const sampleScenario = `A caller claimed to be from my bank's fraud detection squad. They said an unauthorized transaction of Rs 48,000 was flagged on my account and I needed to verify my identity immediately by clicking a link and confirming my OTP to stop the payment.`;
         analysis.simulate({ description: sampleScenario });
       } else if (feature === 'payment') {
-        const res = await fetch('/api/samples/job_fee_qr.png');
+        const res = await fetch(`${API_BASE}/samples/job_fee_qr.png`);
         if (res.ok) {
           const blob = await res.blob();
           const file = new File([blob], 'job_fee_qr.png', { type: 'image/png' });
           analysis.analyze(undefined, file, 'payment');
         }
       } else if (feature === 'document') {
-        const res = await fetch('/api/samples/scholarship_notice.pdf');
+        const res = await fetch(`${API_BASE}/samples/scholarship_notice.pdf`);
         if (res.ok) {
           const blob = await res.blob();
           const file = new File([blob], 'scholarship_notice.pdf', { type: 'application/pdf' });
           analysis.analyze(undefined, file, 'document');
         }
       } else if (feature === 'voice') {
-        const res = await fetch('/api/samples/bank_call.wav');
+        const res = await fetch(`${API_BASE}/samples/bank_call.wav`);
         if (res.ok) {
           const blob = await res.blob();
           const file = new File([blob], 'bank_call.wav', { type: 'audio/wav' });
