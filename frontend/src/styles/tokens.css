@@ -7,38 +7,38 @@
   --text-2xl: clamp(1.5rem, 1.2rem + 1.4vw, 2.25rem);
   --text-hero: clamp(2.25rem, 1.4rem + 4vw, 5rem);
 
-  /* Background colors & mesh */
-  --bg-base: #0B0F2E;
-  --bg-mesh: radial-gradient(at 15% 10%, #4F46E5 0px, transparent 50%),
-             radial-gradient(at 85% 5%, #06B6D4 0px, transparent 45%),
-             radial-gradient(at 70% 90%, #D946EF 0px, transparent 50%),
-             radial-gradient(at 10% 85%, #3B82F6 0px, transparent 45%);
+  /* Background colors & mesh - Dark Blue-Black / Deep Indigo palette (No pink/fuchsia) */
+  --bg-base: #060919;
+  --bg-mesh: radial-gradient(at 15% 10%, #1E3A8A 0px, transparent 50%),
+             radial-gradient(at 85% 5%, #0369A1 0px, transparent 45%),
+             radial-gradient(at 70% 90%, #172554 0px, transparent 50%),
+             radial-gradient(at 10% 85%, #0F172A 0px, transparent 45%);
 
   /* Glass surfaces */
-  --glass: rgba(255, 255, 255, 0.10);
-  --glass-strong: rgba(255, 255, 255, 0.16);
-  --glass-reading: rgba(15, 18, 50, 0.65);
-  --glass-border: rgba(255, 255, 255, 0.22);
-  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.30);
-  --glass-blur: blur(18px) saturate(160%);
-  --glass-shadow: 0 8px 32px rgba(8, 10, 40, 0.35);
+  --glass: rgba(255, 255, 255, 0.08);
+  --glass-strong: rgba(255, 255, 255, 0.14);
+  --glass-reading: rgba(10, 15, 38, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.18);
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  --glass-blur: blur(18px) saturate(150%);
+  --glass-shadow: 0 8px 32px rgba(4, 6, 20, 0.45);
 
   /* Fallback surface for non-backdrop-filter or reduced transparency */
-  --glass-fallback: #13193e;
-  --glass-strong-fallback: #18204c;
-  --glass-reading-fallback: #0f1334;
+  --glass-fallback: #0D132D;
+  --glass-strong-fallback: #111A3E;
+  --glass-reading-fallback: #0A0F26;
 
   /* Typography colors */
   --text: #FFFFFF;
-  --text-muted: rgba(230, 236, 255, 0.78);
+  --text-muted: rgba(225, 235, 255, 0.80);
 
-  /* Brand Accents */
-  --primary: #4F8BFF;
-  --violet: #A855F7;
+  /* Brand Accents - Modern Blue, Indigo & Cyan */
+  --primary: #3B82F6;
+  --violet: #6366F1;
   --cyan: #22D3EE;
-  --pink: #F472B6;
-  --gradient-primary: linear-gradient(135deg, #4F8BFF 0%, #A855F7 55%, #F472B6 100%);
-  --gradient-mesh-accent: linear-gradient(135deg, rgba(79, 139, 255, 0.25) 0%, rgba(168, 85, 247, 0.25) 50%, rgba(244, 114, 182, 0.25) 100%);
+  --pink: #38BDF8;
+  --gradient-primary: linear-gradient(135deg, #3B82F6 0%, #6366F1 50%, #22D3EE 100%);
+  --gradient-mesh-accent: linear-gradient(135deg, rgba(59, 130, 246, 0.25) 0%, rgba(99, 102, 241, 0.25) 50%, rgba(34, 211, 238, 0.25) 100%);
 
   /* Risk colors */
   --risk-low: #34D399;
@@ -51,6 +51,6 @@
   --glow-medium: 0 0 28px rgba(251, 191, 36, 0.45);
   --glow-high: 0 0 28px rgba(251, 146, 60, 0.45);
   --glow-critical: 0 0 28px rgba(244, 63, 94, 0.45);
-  --glow-primary: 0 0 24px rgba(168, 85, 247, 0.45);
+  --glow-primary: 0 0 24px rgba(59, 130, 246, 0.45);
   --glow-cyan: 0 0 20px rgba(34, 211, 238, 0.45);
 }

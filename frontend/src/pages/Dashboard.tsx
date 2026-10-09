@@ -71,12 +71,12 @@ const checkFeatures = [
 ];
 
 const floatingChips = [
-  { id: 'fake-kyc-sms', label: 'Fake KYC SMS', pos: 'top-2 xl:-left-6' },
-  { id: 'scan-to-receive-refund', label: 'UPI Refund QR', pos: 'top-4 xl:-right-6' },
-  { id: 'cloned-voice-relative', label: 'Cloned-Voice Call', pos: 'bottom-8 xl:-left-6' },
-  { id: 'fake-job-offer-fee', label: 'Job Fee Offer Letter', pos: 'bottom-4 xl:-right-6' },
-  { id: 'digital-arrest-impersonator', label: 'Digital Arrest Threat', pos: 'top-1/2 xl:-left-10 -translate-y-1/2' },
-  { id: 'electricity-bill-cutoff', label: 'Electricity Bill Cutoff', pos: 'top-1/2 xl:-right-10 -translate-y-1/2' },
+  { id: 'fake-kyc-sms', label: 'Fake KYC SMS', pos: '-top-4 left-6' },
+  { id: 'scan-to-receive-refund', label: 'UPI Refund QR', pos: '-top-4 right-6' },
+  { id: 'cloned-voice-relative', label: 'Cloned-Voice Call', pos: '-bottom-4 left-8' },
+  { id: 'fake-job-offer-fee', label: 'Job Fee Offer Letter', pos: '-bottom-4 right-8' },
+  { id: 'digital-arrest-impersonator', label: 'Digital Arrest Threat', pos: 'top-1/2 left-2 -translate-y-1/2' },
+  { id: 'electricity-bill-cutoff', label: 'Electricity Bill Cutoff', pos: 'top-1/2 right-2 -translate-y-1/2' },
 ];
 
 const channelFilters: Array<{ id: 'all' | ScamChannel; label: string }> = [
@@ -176,8 +176,8 @@ export default function Dashboard() {
       ===================================================================== */}
       <section className="relative text-center pt-2 sm:pt-6">
         {/* Floating Marquee on Screens (< 1280px) */}
-        <div className="xl:hidden mb-8 overflow-x-auto pb-2 scrollbar-none">
-          <div className="flex gap-2.5 justify-start sm:justify-center px-2 min-w-max">
+        <div className="xl:hidden mb-8 overflow-x-auto pb-2 scrollbar-none w-full max-w-full">
+          <div className="flex gap-2.5 justify-start sm:justify-center px-2 w-max max-w-none">
             {floatingChips.map((chip) => (
               <button
                 key={chip.id}
@@ -224,7 +224,7 @@ export default function Dashboard() {
                 onClick={() => scrollToScam(chip.id)}
                 className={`absolute z-20 ${chip.pos} glass-pill px-4 py-2 text-xs font-semibold text-gray-200 hover:text-white border-white/25 hover:border-cyan shadow-lg transition-all duration-300 hover:scale-105 flex items-center gap-2`}
                 style={{
-                  animation: `blob-drift-${(i % 3) + 1} 14s ease-in-out infinite alternate`,
+                  animation: `chip-float-${(i % 2) + 1} 4s ease-in-out infinite`,
                 }}
               >
                 <div className="w-2 h-2 rounded-full bg-cyan animate-ping" />

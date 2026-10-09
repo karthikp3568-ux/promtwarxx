@@ -32,7 +32,7 @@ export default function AttackPath({ simulation }: AttackPathProps) {
       {/* Path Layout */}
       <div className="flex flex-col lg:flex-row gap-5">
         {/* Stage selection list */}
-        <div className="flex lg:flex-col gap-2.5 overflow-x-auto lg:overflow-visible pb-2 lg:pb-0 lg:w-64 shrink-0">
+        <div className="flex lg:flex-col gap-2.5 overflow-x-auto lg:overflow-visible pb-2 lg:pb-0 lg:w-64 shrink-0 w-full max-w-full">
           {simulation.stages.map((stage, i) => {
             const isCurrent = i === simulation.current_stage_index;
             const isSelected = i === selectedIndex;

@@ -16,7 +16,7 @@ export default function Layout() {
   const { user, isGuest } = useAuth();
 
   return (
-    <div className="min-h-dvh text-white flex flex-col relative">
+    <div className="min-h-dvh text-white flex flex-col relative w-full max-w-[100vw] overflow-x-clip">
       {/* Animated Vivid Mesh Background Blobs */}
       <div className="bg-blob-container" aria-hidden="true">
         <div className="bg-blob bg-blob-1" />
@@ -126,7 +126,7 @@ export default function Layout() {
       </nav>
 
       {/* Main Page Area */}
-      <main className="page-container flex-1 relative z-10">
+      <main className="page-container flex-1 relative z-10 w-full max-w-[100vw] overflow-x-clip">
         <VerifyEmailBanner />
         <Outlet />
       </main>

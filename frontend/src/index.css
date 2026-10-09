@@ -24,6 +24,14 @@
     box-sizing: border-box;
   }
 
+  html, body {
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: clip !important;
+    overscroll-behavior-x: none !important;
+    touch-action: pan-y pinch-zoom;
+  }
+
   html {
     font-size: 16px;
     scroll-behavior: smooth;
@@ -40,7 +48,6 @@
     min-height: 100dvh;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    overflow-x: hidden;
     position: relative;
   }
 
@@ -332,7 +339,7 @@
   height: min(60vw, 550px);
   top: -10%;
   left: 10%;
-  background: radial-gradient(circle, #4F46E5 0%, rgba(79, 70, 229, 0) 70%);
+  background: radial-gradient(circle, #1E40AF 0%, rgba(30, 64, 175, 0) 70%);
   animation: blob-drift-1 22s ease-in-out infinite alternate;
 }
 
@@ -341,7 +348,7 @@
   height: min(55vw, 500px);
   top: 30%;
   right: -5%;
-  background: radial-gradient(circle, #D946EF 0%, rgba(217, 70, 239, 0) 70%);
+  background: radial-gradient(circle, #0284C7 0%, rgba(2, 132, 199, 0) 70%);
   animation: blob-drift-2 26s ease-in-out infinite alternate;
 }
 
@@ -350,8 +357,21 @@
   height: min(50vw, 450px);
   bottom: 5%;
   left: 20%;
-  background: radial-gradient(circle, #06B6D4 0%, rgba(6, 182, 212, 0) 70%);
+  background: radial-gradient(circle, #1E1B4B 0%, rgba(30, 27, 75, 0) 70%);
   animation: blob-drift-3 20s ease-in-out infinite alternate;
+}
+
+/* Strictly vertical float for interactive chips - NEVER translates horizontally */
+@keyframes chip-float-1 {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes chip-float-2 {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(6px); }
+  100% { transform: translateY(0px); }
 }
 
 @keyframes blob-drift-1 {
