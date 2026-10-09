@@ -1,0 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import "./styles/tokens.css";
+@import "tailwindcss";
+
+@theme {
+  --color-navy-900: #0B0F2E;
+  --color-navy-800: #111A3E;
+  --color-navy-700: #1B2456;
+  --color-navy-600: #293675;
+  --color-content-light: #F7F9FC;
+  --color-primary: #4F8BFF;
+  --color-primary-hover: #3B72E2;
+  --color-risk-low: #34D399;
+  --color-risk-medium: #FBBF24;
+  --color-risk-high: #FB923C;
+  --color-risk-critical: #F43F5E;
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-heading: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--bg-base);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: 1.5;
+    min-height: 100dvh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+
+  /* Headings use Plus Jakarta Sans */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    letter-spacing: -0.02em;
+  }
+
+  /* Images, SVGs and canvas fluid rules */
+  img, svg, canvas, video {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Touch targets minimum 44px on touch screens */
+  @media (pointer: coarse) {
+    button, a, input, select, textarea, [role="button"] {
+      min-height: 44px;
+      min-width: 44px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* Fluid Page Container from Spec */
+.page-container {
+  width: min(100% - 2rem, 1280px);
+  margin-inline: auto;
+  padding: clamp(16px, 4vw, 48px);
+}
+
+/* Fluid Card Grid from Spec */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: clamp(12px, 2vw, 24px);
+}

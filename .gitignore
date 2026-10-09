@@ -1,0 +1,51 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Environment and credential files
+.env
+.env.*
+*.env
+service-account*.json
+*firebase-adminsdk*.json
+firebase-debug.log
+firestore-debug.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Node
+node_modules/
+dist/
+.cache/
+frontend-temp/
+
+# Python
+*.egg-info/
+*.egg
+build/
+eggs/
+*.whl
+
+# Models (downloaded at runtime)
+ai-service/models/
+
+# Samples cache (generated)
+ai-service/samples/cache/*.json
+
+# Logs
+*.log

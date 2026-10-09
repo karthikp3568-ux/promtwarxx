@@ -1,0 +1,42 @@
+:root {
+  /* Fluid type tokens (clamp) - minimum 14px (0.875rem) to ensure body text never drops below 14px */
+  --text-xs: clamp(0.875rem, 0.85rem + 0.15vw, 0.9375rem);
+  --text-sm: clamp(0.875rem, 0.84rem + 0.2vw, 0.9375rem);
+  --text-base: clamp(0.95rem, 0.9rem + 0.25vw, 1.0625rem);
+  --text-lg: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
+  --text-2xl: clamp(1.5rem, 1.2rem + 1.4vw, 2.25rem);
+  --text-hero: clamp(2.25rem, 1.4rem + 4vw, 5rem);
+
+  /* Background colors & mesh */
+  --bg-base: #0B0F2E;
+  --bg-mesh: radial-gradient(at 15% 10%, #4F46E5 0px, transparent 50%),
+             radial-gradient(at 85% 5%, #06B6D4 0px, transparent 45%),
+             radial-gradient(at 70% 90%, #D946EF 0px, transparent 50%),
+             radial-gradient(at 10% 85%, #3B82F6 0px, transparent 45%);
+
+  /* Glass surfaces */
+  --glass: rgba(255, 255, 255, 0.10);
+  --glass-strong: rgba(255, 255, 255, 0.16);
+  --glass-reading: rgba(15, 18, 50, 0.55);
+  --glass-border: rgba(255, 255, 255, 0.22);
+  --glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.30);
+  --glass-blur: blur(18px) saturate(160%);
+  --glass-shadow: 0 8px 32px rgba(8, 10, 40, 0.35);
+
+  /* Typography colors */
+  --text: #FFFFFF;
+  --text-muted: rgba(230, 236, 255, 0.78);
+
+  /* Brand Accents */
+  --primary: #4F8BFF;
+  --violet: #A855F7;
+  --cyan: #22D3EE;
+  --pink: #F472B6;
+  --gradient-primary: linear-gradient(135deg, #4F8BFF 0%, #A855F7 55%, #F472B6 100%);
+
+  /* Risk colors */
+  --risk-low: #34D399;
+  --risk-medium: #FBBF24;
+  --risk-high: #FB923C;
+  --risk-critical: #F43F5E;
+}

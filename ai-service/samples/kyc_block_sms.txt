@@ -1,0 +1,11 @@
+URGENT: Your Bharat National Bank account has been temporarily blocked due to incomplete KYC verification. Update your KYC immediately to avoid permanent account closure.
+
+Click here to verify: https://bharat-national-bank-kyc.example.com/verify?ref=KYC2024-8834
+
+You will receive an OTP on your registered mobile number. Please share the OTP with our verification team to complete the process.
+
+This is an automated message from Bharat National Bank Security Division.
+Contact: support@bharatbank.example.com
+Ref: BNB/KYC/2024/8834
+
+Act within 24 hours or your account will be permanently closed.

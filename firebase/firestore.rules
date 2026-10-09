@@ -1,0 +1,47 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function isOwner(uid) { return signedIn() && request.auth.uid == uid; }
+    function validPrefs(p) {
+      return p.keys().hasOnly(['saveAnalysisHistory']) && p.saveAnalysisHistory is bool;
+    }
+
+    match /users/{uid} {
+      allow read: if isOwner(uid);
+      allow create: if isOwner(uid)
+        && request.resource.data.keys().hasOnly(['uid','email','displayName','createdAt','preferences'])
+        && request.resource.data.uid == uid
+        && request.resource.data.email == request.auth.token.get('email', null)
+        && request.resource.data.displayName is string
+        && request.resource.data.displayName.size() <= 60
+        && request.resource.data.createdAt == request.time
+        && validPrefs(request.resource.data.preferences);
+      allow update: if isOwner(uid)
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['displayName','preferences'])
+        && request.resource.data.displayName is string
+        && request.resource.data.displayName.size() <= 60
+        && validPrefs(request.resource.data.preferences);
+      allow delete: if false;
+
+      match /analyses/{analysisId} {
+        allow read: if isOwner(uid);
+        allow create, update, delete: if false;   // backend (Admin SDK) only
+
+        match /simulation/{simulationId} {
+          allow read: if isOwner(uid);
+          allow create, update, delete: if false; // backend (Admin SDK) only
+        }
+      }
+    }
+
+    match /securityInsights/{insightId} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

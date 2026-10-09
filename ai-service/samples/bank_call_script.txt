@@ -1,0 +1,7 @@
+Hello, this is the fraud prevention department of Bharat National Bank. We have detected suspicious activity on your savings account ending in 4523.
+
+Someone has attempted an unauthorized transaction of Rs. 49,999. To block this transaction, I need to verify your identity.
+
+You will receive an OTP on your mobile now. Please read that OTP to me so I can block the fraudulent transaction.
+
+Please hurry, we only have a few minutes. Do not call the regular helpline, this is handled by our special fraud unit.

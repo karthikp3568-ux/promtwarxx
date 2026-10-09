@@ -1,0 +1,233 @@
+import { useEffect, useState, useMemo } from 'react';
+import { History as HistoryIcon, Trash2, Loader2, AlertCircle } from 'lucide-react';
+import { collection, getDocs, query, orderBy } from 'firebase/firestore';
+import { db } from '../firebase';
+import { useAuth } from '../auth/AuthProvider';
+import StatTiles from '../components/history/StatTiles';
+import HistoryFilters from '../components/history/HistoryFilters';
+import HistoryList, { type HistoryItemData } from '../components/history/HistoryList';
+import ConfirmDialog from '../components/history/ConfirmDialog';
+import GuestUpgradeBanner from '../components/auth/GuestUpgradeBanner';
+
+export default function HistoryPage() {
+  const { user } = useAuth();
+  const [items, setItems] = useState<HistoryItemData[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const [selectedFeature, setSelectedFeature] = useState('all');
+  const [sortOrder, setSortOrder] = useState<'newest' | 'oldest'>('newest');
+
+  const [confirmClearOpen, setConfirmClearOpen] = useState(false);
+  const [actionLoading, setActionLoading] = useState(false);
+
+  const fetchHistory = async () => {
+    if (!user) {
+      setLoading(false);
+      return;
+    }
+    setLoading(true);
+    setError(null);
+    try {
+      const colRef = collection(db, 'users', user.uid, 'analyses');
+      const q = query(colRef, orderBy('createdAt', 'desc'));
+      const snap = await getDocs(q);
+
+      const loaded: HistoryItemData[] = snap.docs.map((docSnap) => {
+        const d = docSnap.data();
+        let createdIso = new Date().toISOString();
+        if (d.createdAt?.toDate) {
+          createdIso = d.createdAt.toDate().toISOString();
+        } else if (typeof d.createdAt === 'string') {
+          createdIso = d.createdAt;
+        }
+
+        return {
+          id: docSnap.id,
+          featureType: d.featureType || 'conversation',
+          createdAt: createdIso,
+          riskScore: d.riskScore ?? null,
+          riskLevel: d.riskLevel ?? null,
+          summary: d.summary || 'Analysis report',
+          topIndicators: d.topIndicators || (d.factors || []).slice(0, 3).map((f: any) => f.title || f.code),
+        };
+      });
+
+      setItems(loaded);
+    } catch (e: any) {
+      setError(e.message || 'Failed to load analysis history');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchHistory();
+  }, [user]);
+
+  // Statistics
+  const stats = useMemo(() => {
+    const total = items.length;
+    let critical = 0;
+    let high = 0;
+    let medium = 0;
+    let low = 0;
+    const featureCounts: Record<string, number> = {};
+
+    for (const item of items) {
+      if (item.riskLevel === 'CRITICAL') critical++;
+      else if (item.riskLevel === 'HIGH') high++;
+      else if (item.riskLevel === 'MEDIUM') medium++;
+      else if (item.riskLevel === 'LOW') low++;
+
+      featureCounts[item.featureType] = (featureCounts[item.featureType] || 0) + 1;
+    }
+
+    let mostUsedFeature: string | null = null;
+    let maxCount = 0;
+    for (const [feat, cnt] of Object.entries(featureCounts)) {
+      if (cnt > maxCount) {
+        maxCount = cnt;
+        mostUsedFeature = feat.replace('_', ' ');
+      }
+    }
+
+    return { total, critical, high, medium, low, mostUsedFeature };
+  }, [items]);
+
+  // Filtering and Sorting
+  const filteredItems = useMemo(() => {
+    let result = items;
+    if (selectedFeature !== 'all') {
+      const target = selectedFeature === 'qr_payment' ? 'payment' : selectedFeature === 'what_if' ? 'whatif' : selectedFeature;
+      result = result.filter((it) => it.featureType === target || it.featureType === selectedFeature);
+    }
+
+    return [...result].sort((a, b) => {
+      const timeA = new Date(a.createdAt).getTime();
+      const timeB = new Date(b.createdAt).getTime();
+      return sortOrder === 'newest' ? timeB - timeA : timeA - timeB;
+    });
+  }, [items, selectedFeature, sortOrder]);
+
+  // Delete single item
+  const handleDeleteOne = async (id: string) => {
+    if (!user) return;
+    try {
+      const token = await user.getIdToken();
+      const res = await fetch(`/api/history/${id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.ok) {
+        setItems((prev) => prev.filter((it) => it.id !== id));
+      } else {
+        setError('Failed to delete report.');
+      }
+    } catch (e: any) {
+      setError(e.message || 'Failed to delete report.');
+    }
+  };
+
+  // Clear all items
+  const handleClearAll = async () => {
+    if (!user) return;
+    setActionLoading(true);
+    try {
+      const token = await user.getIdToken();
+      const res = await fetch('/api/history', {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.ok) {
+        setItems([]);
+        setConfirmClearOpen(false);
+      } else {
+        setError('Failed to clear history.');
+      }
+    } catch (e: any) {
+      setError(e.message || 'Failed to clear history.');
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  return (
+    <div className="w-full">
+      {user?.isAnonymous && (
+        <div className="mb-6">
+          <GuestUpgradeBanner />
+        </div>
+      )}
+
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
+        <div className="flex items-center gap-3">
+          <div className="p-2.5 rounded-xl bg-primary/10 text-primary border border-primary/20">
+            <HistoryIcon className="w-6 h-6" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold text-white">Investigation History</h1>
+            <p className="text-sm text-gray-400">Review past security scans, threat factors, and attack paths</p>
+          </div>
+        </div>
+
+        {items.length > 0 && (
+          <button
+            type="button"
+            onClick={() => setConfirmClearOpen(true)}
+            className="flex items-center gap-2 text-sm text-gray-300 hover:text-red-400 bg-navy-800 hover:bg-navy-700 border border-navy-700 px-4 py-2 min-h-[44px] rounded-lg transition-colors"
+          >
+            <Trash2 className="w-4 h-4" />
+            <span>Clear All History</span>
+          </button>
+        )}
+      </div>
+
+      {error && (
+        <div className="mb-6 p-4 rounded-xl bg-red-950/40 border border-red-800/60 flex items-center gap-3 text-red-200 text-sm">
+          <AlertCircle className="w-5 h-5 text-red-400 shrink-0" />
+          <span>{error}</span>
+        </div>
+      )}
+
+      {loading ? (
+        <div className="py-20 text-center flex flex-col items-center justify-center gap-3">
+          <Loader2 className="w-8 h-8 text-primary animate-spin" />
+          <span className="text-sm text-gray-400">Loading analysis reports...</span>
+        </div>
+      ) : (
+        <>
+          <StatTiles
+            total={stats.total}
+            critical={stats.critical}
+            high={stats.high}
+            medium={stats.medium}
+            low={stats.low}
+            mostUsedFeature={stats.mostUsedFeature}
+          />
+
+          <HistoryFilters
+            selectedFeature={selectedFeature}
+            onSelectFeature={setSelectedFeature}
+            sortOrder={sortOrder}
+            onToggleSort={() => setSortOrder((prev) => (prev === 'newest' ? 'oldest' : 'newest'))}
+          />
+
+          <HistoryList
+            items={filteredItems}
+            onDeleteOne={handleDeleteOne}
+          />
+        </>
+      )}
+
+      <ConfirmDialog
+        isOpen={confirmClearOpen}
+        title="Clear All Analysis History?"
+        message="This will permanently delete all your saved scans and associated What-If simulations from Firestore. This action cannot be undone."
+        confirmText={actionLoading ? 'Deleting...' : 'Yes, Delete All'}
+        onConfirm={handleClearAll}
+        onCancel={() => setConfirmClearOpen(false)}
+      />
+    </div>
+  );
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "id": "tip-otp-security",
+    "category": "Credentials",
+    "title": "Never Share One-Time Passwords",
+    "content": "Banks and payment services will never call or message asking for your OTP or UPI PIN to credit funds to your account."
+  },
+  {
+    "id": "tip-upi-receive",
+    "category": "Payments",
+    "title": "Receiving Money Never Requires a PIN",
+    "content": "To receive money via UPI, you never need to enter your PIN or scan a QR code. Entering a PIN always authorizes an outgoing payment."
+  },
+  {
+    "id": "tip-official-channels",
+    "category": "Verification",
+    "title": "Verify Through Official Channels",
+    "content": "If you receive an urgent alert regarding your account, verify by using the phone number printed on the back of your card or by visiting the official app directly."
+  },
+  {
+    "id": "tip-remote-desktop",
+    "category": "Device Safety",
+    "title": "Beware of Remote Access Requests",
+    "content": "Never install remote screen-sharing tools like AnyDesk, TeamViewer, or QuickSupport at the instruction of an unverified caller."
+  },
+  {
+    "id": "tip-urgency-pressure",
+    "category": "Psychology",
+    "title": "Pause When Pressure is Applied",
+    "content": "Scammers manufacture artificial deadlines to prevent you from calmly evaluating evidence. Taking five minutes to verify independently stops most fraud."
+  }
+]
