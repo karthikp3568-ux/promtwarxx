@@ -3,17 +3,17 @@
 @import "tailwindcss";
 
 @theme {
-  --color-navy-900: #0B0F2E;
-  --color-navy-800: #111A3E;
-  --color-navy-700: #1B2456;
-  --color-navy-600: #293675;
+  --color-navy-900: #030912;
+  --color-navy-800: #061521;
+  --color-navy-700: #091F30;
+  --color-navy-600: #0E2E47;
   --color-content-light: #F7F9FC;
-  --color-primary: #4F8BFF;
-  --color-primary-hover: #3B72E2;
-  --color-risk-low: #34D399;
+  --color-primary: #00F5A0;
+  --color-primary-hover: #00C878;
+  --color-risk-low: #00F5A0;
   --color-risk-medium: #FBBF24;
   --color-risk-high: #FB923C;
-  --color-risk-critical: #F43F5E;
+  --color-risk-critical: #FF435B;
   --font-sans: 'Inter', system-ui, sans-serif;
   --font-heading: 'Plus Jakarta Sans', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
@@ -44,11 +44,11 @@
     touch-action: pan-y pinch-zoom;
     background-color: var(--bg-base);
     background-image: 
-      radial-gradient(circle at 50% 0%, rgba(30, 58, 138, 0.25) 0%, transparent 60%),
-      linear-gradient(rgba(34, 211, 238, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(34, 211, 238, 0.03) 1px, transparent 1px),
+      radial-gradient(circle at 50% 0%, rgba(0, 245, 160, 0.12) 0%, transparent 60%),
+      linear-gradient(rgba(0, 245, 160, 0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 245, 160, 0.025) 1px, transparent 1px),
       var(--bg-mesh);
-    background-size: 100% 100%, 48px 48px, 48px 48px, 100% 100%;
+    background-size: 100% 100%, 40px 40px, 40px 40px, 100% 100%;
     background-attachment: fixed;
     color: var(--text);
     font-family: var(--font-sans);
@@ -374,7 +374,7 @@
   height: min(60vw, 550px);
   top: -10%;
   left: 10%;
-  background: radial-gradient(circle, #1E40AF 0%, rgba(30, 64, 175, 0) 70%);
+  background: radial-gradient(circle, rgba(0, 245, 160, 0.18) 0%, rgba(0, 245, 160, 0) 70%);
   animation: blob-drift-1 22s ease-in-out infinite alternate;
 }
 
@@ -383,7 +383,7 @@
   height: min(55vw, 500px);
   top: 30%;
   right: -5%;
-  background: radial-gradient(circle, #0284C7 0%, rgba(2, 132, 199, 0) 70%);
+  background: radial-gradient(circle, rgba(0, 217, 208, 0.15) 0%, rgba(0, 217, 208, 0) 70%);
   animation: blob-drift-2 26s ease-in-out infinite alternate;
 }
 
@@ -392,8 +392,28 @@
   height: min(50vw, 450px);
   bottom: 5%;
   left: 20%;
-  background: radial-gradient(circle, #1E1B4B 0%, rgba(30, 27, 75, 0) 70%);
+  background: radial-gradient(circle, rgba(6, 37, 51, 0.5) 0%, rgba(6, 37, 51, 0) 70%);
   animation: blob-drift-3 20s ease-in-out infinite alternate;
+}
+
+/* Glowing green heartbeat waveform animation */
+@keyframes heartbeat-pulse {
+  0% {
+    stroke-dashoffset: 600;
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.9;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0.3;
+  }
+}
+
+.animate-heartbeat {
+  stroke-dasharray: 600;
+  animation: heartbeat-pulse 3.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 /* Strictly vertical float for interactive chips - NEVER translates horizontally */

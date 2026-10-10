@@ -18,6 +18,19 @@ export default function Layout() {
 
   return (
     <div className="min-h-dvh text-white flex flex-col relative w-full max-w-[100vw] overflow-x-clip">
+      {/* Cinematic Cybersecurity Command Center Background Layer */}
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
+        {/* Background Command Center Image with Subtle Opacity and Vignette */}
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-25 mix-blend-luminosity scale-105"
+          style={{ backgroundImage: `url('/cyber_command_bg.jpg')` }}
+        />
+        {/* Dark Radial Center Mask ensuring center content remains uncluttered and readable */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(3,9,18,0.7)_0%,rgba(3,9,18,0.92)_65%,rgba(3,9,18,0.98)_100%)]" />
+        {/* Cyber Green Scanlines Texture */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(0,245,160,0.015)_1px,transparent_1px)] bg-[size:100%_4px] opacity-60" />
+      </div>
+
       {/* Animated Vivid Mesh Background Blobs */}
       <div className="bg-blob-container" aria-hidden="true">
         <div className="bg-blob bg-blob-1" />
@@ -26,7 +39,7 @@ export default function Layout() {
       </div>
 
       {/* Sticky Frosted Glass Navigation Bar */}
-      <nav className="sticky top-0 z-50 glass-strong border-b border-white/15 backdrop-blur-md">
+      <nav className="sticky top-0 z-50 glass-strong border-b border-white/10 backdrop-blur-md">
         <div className="w-[min(100%-2rem,1280px)] mx-auto px-2 sm:px-4 h-16 flex items-center justify-between">
           <NavLink to="/" className="flex items-center gap-2.5 text-white font-semibold min-h-[44px] min-w-[44px] group">
             <div className="icon-tile icon-tile-gradient w-9 h-9 rounded-xl flex items-center justify-center transition-transform group-hover:scale-105">

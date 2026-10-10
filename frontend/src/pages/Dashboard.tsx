@@ -30,53 +30,53 @@ import { sampleSimulation } from './fixtures';
 const checkFeatures = [
   {
     id: 'conversation',
-    title: 'Conversation',
-    subtitle: 'Analyze SMS, chats, emails & social messages for social engineering',
+    title: 'Conversation Trust Analyzer',
+    subtitle: 'Analyze SMS messages, chats, emails, and social-engineering attempts',
     icon: MessageSquareWarning,
-    color: 'text-primary',
-    gradient: 'from-blue-500/20 to-indigo-500/20',
+    color: 'text-[#00F5A0]',
+    badge: 'SMS / Chat',
   },
   {
     id: 'payment',
-    title: 'QR & Payment',
-    subtitle: 'Verify UPI QR codes, collect requests & mismatched payee details',
+    title: 'QR & Payment Scam Detector',
+    subtitle: 'Inspect QR codes, suspicious payment requests, and payee mismatches',
     icon: QrCode,
-    color: 'text-[#FBBF24]',
-    gradient: 'from-amber-500/20 to-orange-500/20',
+    color: 'text-[#00D9D0]',
+    badge: 'UPI / QR',
   },
   {
     id: 'document',
-    title: 'Document',
-    subtitle: 'Inspect job offer letters, notices & PDFs for active malware & hidden links',
+    title: 'Document Scam Analyzer',
+    subtitle: 'Inspect job offers, notices, PDFs, hidden links, and suspicious documents',
     icon: FileSearch,
-    color: 'text-cyan',
-    gradient: 'from-cyan-500/20 to-blue-500/20',
+    color: 'text-[#20CFFF]',
+    badge: 'PDF / OCR',
   },
   {
     id: 'voice',
-    title: 'Voice',
-    subtitle: 'Detect synthetic AI voice cloning & coercive urgency patterns',
+    title: 'Voice Scam Detector',
+    subtitle: 'Analyze voice recordings for potential synthetic cloning and urgency patterns',
     icon: Mic,
-    color: 'text-[#FB923C]',
-    gradient: 'from-orange-500/20 to-rose-500/20',
+    color: 'text-[#00C878]',
+    badge: 'Audio AI',
   },
   {
     id: 'whatif',
-    title: 'What-If',
-    subtitle: 'Simulate how an attack unfolds and pinpoint safe stopping points',
+    title: 'What-If Attack Simulation',
+    subtitle: 'Explore simulated attack paths and identify potential stopping points',
     icon: GitBranch,
     color: 'text-[#A855F7]',
-    gradient: 'from-purple-500/20 to-pink-500/20',
+    badge: 'Simulate',
   },
 ];
 
 const floatingChips = [
-  { id: 'fake-kyc-sms', label: 'Fake KYC SMS', pos: '-top-4 left-6' },
-  { id: 'scan-to-receive-refund', label: 'UPI Refund QR', pos: '-top-4 right-6' },
-  { id: 'cloned-voice-relative', label: 'Cloned-Voice Call', pos: '-bottom-4 left-8' },
-  { id: 'fake-job-offer-fee', label: 'Job Fee Offer Letter', pos: '-bottom-4 right-8' },
-  { id: 'digital-arrest-impersonator', label: 'Digital Arrest Threat', pos: 'top-1/2 left-2 -translate-y-1/2' },
-  { id: 'electricity-bill-cutoff', label: 'Electricity Bill Cutoff', pos: 'top-1/2 right-2 -translate-y-1/2' },
+  { id: 'fake-kyc-sms', label: 'Fake KYC SMS', risk: 'HIGH', channel: 'SMS' },
+  { id: 'scan-to-receive-refund', label: 'UPI Refund QR', risk: 'CRITICAL', channel: 'QR' },
+  { id: 'cloned-voice-relative', label: 'Cloned-Voice Call', risk: 'CRITICAL', channel: 'Voice' },
+  { id: 'fake-job-offer-fee', label: 'Job Fee Scam', risk: 'HIGH', channel: 'Doc' },
+  { id: 'digital-arrest-impersonator', label: 'Digital Arrest Threat', risk: 'CRITICAL', channel: 'Call' },
+  { id: 'electricity-bill-cutoff', label: 'Electricity Bill Cutoff', risk: 'HIGH', channel: 'SMS' },
 ];
 
 const channelFilters: Array<{ id: 'all' | ScamChannel; label: string }> = [
@@ -172,35 +172,32 @@ export default function Dashboard() {
   return (
     <div className="w-full space-y-16 sm:space-y-24 py-4 sm:py-8">
       {/* =====================================================================
-          3.2 HERO + CHECK HUB (THE CENTRE OF THE PAGE)
+          CINEMATIC THREAT-TO-DEFENSE STORY HERO
       ===================================================================== */}
       <section className="relative text-center pt-2 sm:pt-6">
-        {/* Live Threat Chips on Screens (< 1280px) */}
-        <div className="xl:hidden mb-8 w-full max-w-full">
-          <div className="flex flex-wrap gap-2 justify-center px-1">
-            {floatingChips.map((chip) => (
-              <button
-                key={chip.id}
-                type="button"
-                onClick={() => scrollToScam(chip.id)}
-                className="glass-pill px-3 py-1.5 text-xs text-gray-200 hover:text-white border-white/20 hover:border-cyan transition-all flex items-center gap-1.5 shrink-0"
-              >
-                <Radio className="w-3 h-3 text-cyan animate-pulse" />
-                <span>{chip.label}</span>
-              </button>
-            ))}
-          </div>
+        {/* Glowing Green ECG Heartbeat Waveform running behind hero */}
+        <div className="absolute inset-0 -top-8 flex items-center justify-center pointer-events-none overflow-hidden opacity-35 z-0" aria-hidden="true">
+          <svg className="w-full max-w-5xl h-28 text-[#00F5A0]" viewBox="0 0 1000 120" fill="none">
+            <path
+              d="M0,60 L280,60 L300,30 L320,90 L340,10 L360,110 L380,60 L620,60 L640,35 L655,85 L670,20 L685,100 L700,60 L1000,60"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="animate-heartbeat"
+            />
+          </svg>
         </div>
 
         {/* Hero Headline & Subline */}
-        <div className="max-w-3xl mx-auto mb-10 sm:mb-14">
-          <div className="inline-flex items-center gap-2 glass-pill px-4 py-1.5 mb-5 border-cyan/30 text-cyan text-xs font-semibold">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>AI-Powered Digital Safety Layer</span>
+        <div className="relative z-10 max-w-3xl mx-auto mb-10 sm:mb-12">
+          <div className="inline-flex items-center gap-2 glass-pill px-4 py-1.5 mb-5 border-[#00F5A0]/30 text-[#00F5A0] text-xs font-semibold shadow-[0_0_15px_rgba(0,245,160,0.2)]">
+            <span className="w-2 h-2 rounded-full bg-[#00F5A0] animate-ping" />
+            <span>AI-POWERED DIGITAL SAFETY LAYER</span>
           </div>
 
           <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-white mb-4">
-            <span className="text-gradient-primary">TrustGuard AI</span>
+            TrustGuard <span className="text-gradient-primary">AI</span>
           </h1>
 
           <p className="text-lg sm:text-2xl font-bold text-gray-100 mb-3 tracking-tight">
@@ -208,47 +205,90 @@ export default function Dashboard() {
           </p>
 
           <p className="text-sm sm:text-base text-gray-300 max-w-2xl mx-auto leading-relaxed">
-            Analyze suspicious messages, QR codes, documents and voice recordings with private,
+            Analyze suspicious messages, QR codes, documents, and voice recordings with private,
             evidence-backed AI security reasoning.
           </p>
         </div>
 
-        {/* Central Check Hub Container */}
-        <div className="relative max-w-4xl mx-auto w-full">
-          {/* Active Live Threat Chips Ribbon (Desktop & Large Screens) */}
-          <div className="hidden xl:flex items-center justify-center flex-wrap gap-2.5 mb-6">
-            <span className="text-[11px] font-mono text-cyan/70 uppercase tracking-wider flex items-center gap-1.5 mr-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan animate-ping" />
-              Live Radar:
+        {/* Visual Storytelling: Threat Vectors vs AI Protection Wings */}
+        <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto mb-10 text-left">
+          {/* Left Threat Warning Card */}
+          <div className="glass-card p-4 rounded-2xl border-rose-500/30 bg-rose-950/20 flex items-start gap-3">
+            <div className="w-8 h-8 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center shrink-0 mt-0.5">
+              <AlertTriangle className="w-4 h-4" />
+            </div>
+            <div>
+              <span className="text-[10px] font-mono uppercase tracking-wider text-rose-400 font-bold block">1. The Threat</span>
+              <p className="text-xs text-gray-200 mt-0.5 leading-snug">
+                Impersonators weaponize urgency, fake bank notices, cloned voices & fake UPI refunds.
+              </p>
+            </div>
+          </div>
+
+          {/* Center Detection Signal Card */}
+          <div className="glass-card p-4 rounded-2xl border-[#00F5A0]/40 bg-[#00F5A0]/10 flex items-start gap-3 shadow-[0_0_20px_rgba(0,245,160,0.15)]">
+            <div className="w-8 h-8 rounded-xl bg-[#00F5A0]/20 text-[#00F5A0] flex items-center justify-center shrink-0 mt-0.5">
+              <Sparkles className="w-4 h-4" />
+            </div>
+            <div>
+              <span className="text-[10px] font-mono uppercase tracking-wider text-[#00F5A0] font-bold block">2. Detection</span>
+              <p className="text-xs text-gray-200 mt-0.5 leading-snug">
+                Sub-millisecond heuristics extract IOCs, homoglyphs & payment mismatches before inference.
+              </p>
+            </div>
+          </div>
+
+          {/* Right Defense Action Card */}
+          <div className="glass-card p-4 rounded-2xl border-cyan-400/30 bg-cyan-950/20 flex items-start gap-3">
+            <div className="w-8 h-8 rounded-xl bg-cyan-400/20 text-cyan-300 flex items-center justify-center shrink-0 mt-0.5">
+              <Shield className="w-4 h-4" />
+            </div>
+            <div>
+              <span className="text-[10px] font-mono uppercase tracking-wider text-cyan-400 font-bold block">3. Defense</span>
+              <p className="text-xs text-gray-200 mt-0.5 leading-snug">
+                Zero-retention AI reasoning, MITRE mapping & 1930 emergency kill-switch shield you.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Live Threat Radar Wrapping Chips */}
+        <div className="relative z-10 max-w-4xl mx-auto w-full mb-8">
+          <div className="flex flex-wrap items-center justify-center gap-2 px-2">
+            <span className="text-[11px] font-mono text-[#00F5A0] uppercase tracking-wider flex items-center gap-1.5 mr-1 font-bold">
+              <Radio className="w-3.5 h-3.5 animate-pulse" />
+              Live Threat Radar:
             </span>
-            {floatingChips.map((chip, i) => (
+            {floatingChips.map((chip) => (
               <button
                 key={chip.id}
                 type="button"
                 onClick={() => scrollToScam(chip.id)}
-                className="glass-pill px-3.5 py-1.5 text-xs font-semibold text-gray-200 hover:text-white border-white/20 hover:border-cyan shadow-sm transition-all duration-200 hover:scale-105 flex items-center gap-2 hover:bg-white/10"
-                style={{
-                  animation: `chip-float-${(i % 2) + 1} 4s ease-in-out infinite`,
-                }}
+                className="glass-pill px-3.5 py-1.5 text-xs font-semibold text-gray-200 hover:text-white border-white/20 hover:border-[#00F5A0] transition-all duration-200 hover:scale-105 flex items-center gap-1.5 hover:bg-white/10"
               >
-                <div className="w-1.5 h-1.5 rounded-full bg-cyan" />
+                <span className={`w-1.5 h-1.5 rounded-full ${chip.risk === 'CRITICAL' ? 'bg-[#FF435B]' : 'bg-[#00F5A0]'}`} />
                 <span>{chip.label}</span>
+                <span className="text-[9px] font-mono text-gray-400 uppercase bg-black/40 px-1 rounded">
+                  {chip.channel}
+                </span>
               </button>
             ))}
           </div>
+        </div>
 
-          {/* Central Frosted Glass Check Hub Container */}
-          <div className="glass-strong border border-white/25 rounded-3xl p-6 sm:p-10 shadow-2xl relative z-10 w-full">
+        {/* Central Inspection Panel ("What do you want to check?") */}
+        <div className="relative max-w-4xl mx-auto w-full z-10">
+          <div className="glass-strong border border-[#00F5A0]/30 rounded-3xl p-6 sm:p-10 shadow-[0_0_40px_rgba(0,245,160,0.12)] relative z-10 w-full text-left">
             <div className="text-center mb-8">
               <h2 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight mb-2">
                 What do you want to check?
               </h2>
               <p className="text-xs sm:text-sm text-gray-300">
-                Select an inspection engine below to submit content or simulate attack branches:
+                Choose an analysis engine to inspect suspicious content or explore attack scenarios:
               </p>
             </div>
 
-            {/* 5 Feature Buttons Grid */}
+            {/* 6 Functional Feature Cards Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-left">
               {checkFeatures.map((feat) => {
                 const Icon = feat.icon;
@@ -256,18 +296,18 @@ export default function Dashboard() {
                   <Link
                     key={feat.id}
                     to={`/check/${feat.id}`}
-                    className="group glass-card p-5 rounded-2xl hover:border-cyan/60 transition-all duration-200 flex flex-col justify-between min-h-[140px] hover:shadow-[0_0_24px_rgba(34,211,238,0.25)]"
+                    className="group glass-card p-5 rounded-2xl hover:border-[#00F5A0]/60 transition-all duration-200 flex flex-col justify-between min-h-[150px] hover:shadow-[0_0_24px_rgba(0,245,160,0.2)]"
                   >
                     <div>
                       <div className="flex items-center justify-between mb-3">
-                        <div className="icon-tile icon-tile-gradient w-10 h-10 rounded-xl flex items-center justify-center transition-transform group-hover:scale-110">
-                          <Icon className="w-5 h-5 text-white" />
+                        <div className="icon-tile w-10 h-10 rounded-xl bg-[#00F5A0]/15 border border-[#00F5A0]/30 flex items-center justify-center transition-transform group-hover:scale-110">
+                          <Icon className={`w-5 h-5 ${feat.color}`} />
                         </div>
-                        <span className="text-xs font-bold text-cyan opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
-                          Check Now <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                        <span className="text-[10px] font-mono text-[#00F5A0] uppercase font-bold px-2 py-0.5 rounded bg-black/40 border border-[#00F5A0]/20">
+                          {feat.badge}
                         </span>
                       </div>
-                      <h3 className="text-base font-bold text-white group-hover:text-cyan transition-colors">
+                      <h3 className="text-base font-bold text-white group-hover:text-[#00F5A0] transition-colors">
                         {feat.title}
                       </h3>
                       <p className="text-xs text-gray-300 mt-1 leading-relaxed">
@@ -277,23 +317,23 @@ export default function Dashboard() {
 
                     <div className="pt-3 mt-3 border-t border-white/10 flex items-center justify-between text-xs text-gray-400 group-hover:text-white">
                       <span>Launch scanner</span>
-                      <ArrowRight className="w-3.5 h-3.5 text-cyan group-hover:translate-x-1 transition-transform" />
+                      <ArrowRight className="w-3.5 h-3.5 text-[#00F5A0] group-hover:translate-x-1 transition-transform" />
                     </div>
                   </Link>
                 );
               })}
 
-              {/* Adversarial Playground & Red-Team Sandbox Card */}
+              {/* Feature 6: Adversarial Lab / Red Team Card */}
               <Link
                 to="/playground"
-                className="group glass-card p-5 rounded-2xl hover:border-purple-400/60 transition-all duration-200 flex flex-col justify-between min-h-[140px] hover:shadow-[0_0_24px_rgba(168,85,247,0.25)] relative overflow-hidden"
+                className="group glass-card p-5 rounded-2xl hover:border-purple-400/60 transition-all duration-200 flex flex-col justify-between min-h-[150px] hover:shadow-[0_0_24px_rgba(168,85,247,0.25)] relative overflow-hidden"
               >
                 <div className="absolute top-2 right-2 px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 text-[10px] font-mono border border-purple-500/30">
-                  NEW: RED TEAM
+                  RED TEAM
                 </div>
                 <div>
-                  <div className="icon-tile icon-tile-gradient w-10 h-10 rounded-xl flex items-center justify-center transition-transform group-hover:scale-110 mb-3">
-                    <Shield className="w-5 h-5 text-white" />
+                  <div className="icon-tile w-10 h-10 rounded-xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center transition-transform group-hover:scale-110 mb-3">
+                    <Shield className="w-5 h-5 text-purple-300" />
                   </div>
                   <h3 className="text-base font-bold text-white group-hover:text-purple-300 transition-colors">
                     Adversarial Lab
