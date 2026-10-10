@@ -113,7 +113,7 @@ export default function Dashboard() {
         const q = query(colRef, orderBy('createdAt', 'desc'), limit(50));
         const snap = await getDocs(q);
 
-        let total = snap.size;
+        const total = snap.size;
         let critical = 0;
         let high = 0;
         let medium = 0;

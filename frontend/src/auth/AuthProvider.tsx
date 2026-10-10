@@ -168,7 +168,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setError(null);
     try {
       await sendPasswordResetEmail(auth, email);
-    } catch (err) {
+    } catch {
       // Security rule: Always report success to avoid email enumeration
     }
   };

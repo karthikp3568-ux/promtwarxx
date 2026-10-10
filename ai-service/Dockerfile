@@ -1,5 +1,5 @@
 # ==============================================================================
-# TrustGuard AI — Cloud Run Production Dockerfile
+# TrustGuard AI — Production Dockerfile
 # Optimized for Python 3.11, CPU-only PyTorch & WavLM Forensics
 # ==============================================================================
 FROM python:3.11-slim AS runner
@@ -7,7 +7,7 @@ FROM python:3.11-slim AS runner
 # Prevent Python from writing .pyc and buffering stdout/stderr
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
-    PORT=8080 \
+    PORT=8000 \
     TRANSFORMERS_CACHE=/app/.cache/huggingface \
     HF_HOME=/app/.cache/huggingface
 
@@ -33,7 +33,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Pre-cache WavLM audio forensics weights into the container image
-# This ensures sub-second Cloud Run cold starts and avoids runtime HuggingFace downloads
 RUN python scripts/download_models.py
 
 # Create unprivileged application user for security best practice
@@ -41,12 +40,11 @@ RUN useradd -m -u 1000 trustguard && \
     chown -R trustguard:trustguard /app
 USER trustguard
 
-# Cloud Run injects $PORT (default 8080)
-EXPOSE 8080
+EXPOSE 8000
 
 # Health check to ensure service readiness
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
     CMD curl -f http://localhost:${PORT}/health || exit 1
 
-# Launch FastAPI via Uvicorn (Cloud Run manages port via PORT env var)
+# Launch FastAPI via Uvicorn
 CMD exec uvicorn main:app --host 0.0.0.0 --port ${PORT} --workers 1

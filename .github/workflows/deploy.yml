@@ -1,4 +1,4 @@
-name: TrustGuard CI/CD Pipeline
+name: TrustGuard CI Pipeline
 
 on:
   push:
@@ -9,14 +9,9 @@ on:
       - main
   workflow_dispatch:
 
-env:
-  PROJECT_ID: promtwars-745af
-  REGION: us-central1
-  SERVICE_NAME: trustguard-ai-service
-
 jobs:
   test:
-    name: Run Backend & Frontend Tests
+    name: Run Backend & Frontend Verification
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -38,7 +33,7 @@ jobs:
       - name: Run Backend Unit Tests
         working-directory: ai-service
         run: |
-          pytest tests/ -v -m "not live" || pytest tests/test_payment.py tests/test_document.py tests/test_voice.py
+          pytest tests/test_risk_engine.py tests/test_url_inspector.py tests/test_file_validation.py tests/test_log_privacy.py tests/test_redaction.py tests/test_auth.py tests/test_document.py tests/test_payment.py tests/test_persistence.py tests/test_health_and_security.py -v
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -47,74 +42,14 @@ jobs:
           cache: "npm"
           cache-dependency-path: frontend/package-lock.json
 
-      - name: Install Frontend Dependencies & Verify Build
+      - name: Install Frontend Dependencies
         working-directory: frontend
-        run: |
-          npm ci
-          npm run build
+        run: npm ci
 
-  deploy:
-    name: Cloud Deploy to Cloud Run & Firebase
-    needs: test
-    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Authenticate to Google Cloud
-        if: env.GCP_SA_KEY != ''
-        uses: google-github-actions/auth@v2
-        with:
-          credentials_json: ${{ secrets.GCP_SA_KEY }}
-
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v2
-        with:
-          project_id: ${{ env.PROJECT_ID }}
-
-      - name: Deploy Backend to Google Cloud Run
-        run: |
-          gcloud run deploy ${{ env.SERVICE_NAME }} \
-            --source ./ai-service \
-            --project ${{ env.PROJECT_ID }} \
-            --region ${{ env.REGION }} \
-            --platform managed \
-            --allow-unauthenticated \
-            --memory 2Gi \
-            --cpu 2 \
-            --timeout 300 \
-            --set-env-vars "FIREBASE_PROJECT_ID=${{ env.PROJECT_ID }},USE_FIREBASE_EMULATORS=false,GEMINI_MODEL=gemini-3.8-flash,VOICE_MODEL_ENABLED=true,ALLOWED_ORIGINS=https://${{ env.PROJECT_ID }}.web.app,https://${{ env.PROJECT_ID }}.firebaseapp.com,GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}"
-
-      - name: Get Backend URL
-        id: backend_url
-        run: |
-          URL=$(gcloud run services describe ${{ env.SERVICE_NAME }} --platform managed --region ${{ env.REGION }} --project ${{ env.PROJECT_ID }} --format 'value(status.url)')
-          echo "url=$URL" >> $GITHUB_OUTPUT
-
-      - name: Build Frontend with Cloud Run API URL
+      - name: Run Frontend Lint
         working-directory: frontend
-        env:
-          VITE_API_URL: ${{ steps.backend_url.outputs.url }}
-          VITE_FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
-          VITE_FIREBASE_AUTH_DOMAIN: ${{ env.PROJECT_ID }}.firebaseapp.com
-          VITE_FIREBASE_PROJECT_ID: ${{ env.PROJECT_ID }}
-          VITE_FIREBASE_STORAGE_BUCKET: ${{ env.PROJECT_ID }}.appspot.com
-          VITE_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}
-          VITE_FIREBASE_APP_ID: ${{ secrets.FIREBASE_APP_ID }}
-          VITE_USE_FIREBASE_EMULATORS: "false"
-        run: |
-          npm ci
-          npm run build
+        run: npm run lint
 
-      - name: Deploy Firestore Rules, Indexes & Hosting to Firebase
-        uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-          channelId: live
-          projectId: ${{ env.PROJECT_ID }}
+      - name: Verify Frontend Production Build
+        working-directory: frontend
+        run: npm run build

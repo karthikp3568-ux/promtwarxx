@@ -159,7 +159,7 @@ When preparing to transition from local Firebase Emulators (`demo-trustguard`) t
 2. **Email Enumeration Protection**:
    - In **Authentication → Settings → User actions**, verify that *Email enumeration protection* is enabled.
 3. **Authorized Domains**:
-   - In **Authentication → Settings → Authorized domains**, add your production hosting domain (e.g., `trustguard.app` or Cloud Run domain).
+   - In **Authentication → Settings → Authorized domains**, add your production hosting domain (e.g., `trustguard.app` or your Vercel domain `*.vercel.app`).
 4. **Firestore Database**:
    - In **Firestore Database**, create the database in *Production mode* in a region nearest your users (e.g., `asia-south1` or `us-central1`).
 5. **Web App Configuration**:

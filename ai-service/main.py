@@ -35,6 +35,7 @@ app.state.limiter = limiter
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.origins_list,
+    allow_origin_regex=r"https://.*\.vercel\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -63,12 +64,17 @@ async def generic_error_handler(request: Request, exc: Exception) -> JSONRespons
 
 
 @app.middleware("http")
-async def request_id_middleware(request: Request, call_next):
+async def request_id_and_security_middleware(request: Request, call_next):
     request_id = str(uuid.uuid4())[:8]
     request.state.request_id = request_id
     response = await call_next(request)
     response.headers["X-Request-ID"] = request_id
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    response.headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()"
     return response
+
 
 
 # Routers
@@ -84,7 +90,7 @@ app.include_router(history.router)
 
 @app.get("/health", tags=["health"])
 async def root_health():
-    """Root health probe for Cloud Run and container platforms."""
+    """Root health probe for container platforms and monitoring."""
     return await health.health()
 
 

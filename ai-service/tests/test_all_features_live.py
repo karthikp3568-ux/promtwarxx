@@ -8,7 +8,18 @@ import pytest
 BASE_URL = "http://localhost:8000"
 
 
+@pytest.fixture(autouse=True)
+def require_live_environment():
+    """Skip live acceptance tests when local test server or emulators are not running."""
+    try:
+        httpx.get("http://localhost:8000/api/health", timeout=0.8)
+        httpx.get("http://localhost:9099/", timeout=0.8)
+    except Exception:
+        pytest.skip("Live backend (localhost:8000) or emulator (localhost:9099) not running")
+
+
 def get_auth_headers():
+
     res = httpx.post(
         "http://localhost:9099/identitytoolkit.googleapis.com/v1/accounts:signUp?key=fake-key",
         json={"returnSecureToken": True},
