@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import { ChevronDown, ChevronUp, Bot, Code, Layers } from 'lucide-react';
 import type { Factor, Severity } from '../../api/types';
+import MitreBadge from './MitreBadge';
+import type { MitreTechnique } from '../../content/mitre';
 
 interface EvidenceCardProps {
   factor: Factor;
   index: number;
+  onSelectMitre?: (technique: MitreTechnique) => void;
 }
 
 const severityBorder: Record<Severity, string> = {
@@ -25,7 +28,7 @@ const sourceConfig = {
   combined: { label: 'Combined pattern', icon: Layers, color: 'text-amber-400 bg-amber-400/15 border-amber-400/30' },
 };
 
-export default function EvidenceCard({ factor, index }: EvidenceCardProps) {
+export default function EvidenceCard({ factor, index, onSelectMitre }: EvidenceCardProps) {
   const [expanded, setExpanded] = useState(false);
   const source = sourceConfig[factor.source];
   const SourceIcon = source.icon;
@@ -47,9 +50,14 @@ export default function EvidenceCard({ factor, index }: EvidenceCardProps) {
                 {factor.severity} ({factor.weight} pts)
               </span>
             </div>
-            <div className={`inline-flex items-center gap-1.5 text-xs px-2.5 py-0.5 rounded-full border ${source.color}`}>
-              <SourceIcon className="w-3 h-3" />
-              <span>{source.label}</span>
+            <div className="flex flex-wrap items-center gap-2">
+              <div className={`inline-flex items-center gap-1.5 text-xs px-2.5 py-0.5 rounded-full border ${source.color}`}>
+                <SourceIcon className="w-3 h-3" />
+                <span>{source.label}</span>
+              </div>
+              {onSelectMitre && (
+                <MitreBadge factorCode={factor.code} onSelect={onSelectMitre} />
+              )}
             </div>
           </div>
         </div>

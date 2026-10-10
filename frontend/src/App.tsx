@@ -12,6 +12,7 @@ import Privacy from './pages/Privacy';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ResetPassword from './pages/ResetPassword';
+import AdversarialPlayground from './pages/AdversarialPlayground';
 
 // Dev-only: the dynamic import string is computed so Vite cannot
 // statically analyze it and will NOT include it in the production bundle.
@@ -27,6 +28,7 @@ export default function App() {
           <Route element={<Layout />}>
             {/* Public routes */}
             <Route path="/" element={<Dashboard />} />
+            <Route path="/playground" element={<AdversarialPlayground />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/reset-password" element={<ResetPassword />} />

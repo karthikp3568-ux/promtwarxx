@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { GitBranch, RotateCcw, AlertTriangle } from 'lucide-react';
+import { GitBranch, RotateCcw, AlertTriangle, FileText, Shield } from 'lucide-react';
 import type { AnalysisResult } from '../../api/types';
 import RiskGauge from '../../components/risk/RiskGauge';
 import CategoryGrid from '../../components/risk/CategoryGrid';
@@ -10,6 +11,10 @@ import RecommendationList from '../../components/evidence/RecommendationList';
 import EntityList from '../../components/common/EntityList';
 import CachedBadge from '../../components/common/CachedBadge';
 import SaveStatus from '../../components/common/SaveStatus';
+import EmergencyKillSwitch from '../../components/evidence/EmergencyKillSwitch';
+import ForensicDossierModal from '../../components/evidence/ForensicDossierModal';
+import MitreAttackDrawer from '../../components/evidence/MitreAttackDrawer';
+import type { MitreTechnique } from '../../content/mitre';
 
 interface AnalysisResultViewProps {
   result: AnalysisResult;
@@ -20,6 +25,8 @@ interface AnalysisResultViewProps {
 
 export default function AnalysisResultView({ result, onReset, saveStatus, children }: AnalysisResultViewProps) {
   const isInsufficient = result.status === 'insufficient_content';
+  const [dossierOpen, setDossierOpen] = useState(false);
+  const [selectedMitre, setSelectedMitre] = useState<MitreTechnique | null>(null);
 
   return (
     <div className="space-y-6 sm:space-y-8 animate-fadeIn">
@@ -46,9 +53,21 @@ export default function AnalysisResultView({ result, onReset, saveStatus, childr
 
         <div className="flex flex-wrap items-center gap-3 shrink-0">
           {saveStatus && <SaveStatus status={saveStatus} />}
+
+          {!isInsufficient && (
+            <button
+              type="button"
+              onClick={() => setDossierOpen(true)}
+              className="btn-primary text-xs sm:text-sm font-bold px-4 py-2 min-h-[40px] flex items-center gap-2 shadow-md"
+            >
+              <FileText className="w-4 h-4" />
+              <span>Certified Dossier</span>
+            </button>
+          )}
+
           <button
             onClick={onReset}
-            className="btn-glass text-xs sm:text-sm font-semibold px-4 py-2 min-h-[40px] text-gray-200 hover:text-white"
+            className="btn-glass text-xs sm:text-sm font-semibold px-4 py-2 min-h-[40px] text-gray-200 hover:text-white flex items-center gap-2"
           >
             <RotateCcw className="w-4 h-4 text-cyan" />
             <span>New Analysis</span>
@@ -69,6 +88,9 @@ export default function AnalysisResultView({ result, onReset, saveStatus, childr
         </div>
       ) : (
         <>
+          {/* Emergency Kill-Switch for High/Critical Risks */}
+          <EmergencyKillSwitch result={result} />
+
           {/* Risk Gauge Hero */}
           <div className="flex justify-center">
             <div className="w-full max-w-md">
@@ -92,14 +114,24 @@ export default function AnalysisResultView({ result, onReset, saveStatus, childr
           {result.factors.length > 0 && (
             <div>
               <div className="flex items-center justify-between mb-3">
-                <h3 className="text-sm font-bold text-gray-200 uppercase tracking-wider">
-                  Verified Evidence Signals ({result.factors.length})
-                </h3>
+                <div className="flex items-center gap-2">
+                  <h3 className="text-sm font-bold text-gray-200 uppercase tracking-wider">
+                    Verified Evidence Signals ({result.factors.length})
+                  </h3>
+                  <span className="glass-pill text-[10px] px-2 py-0.5 text-cyan border-cyan/30 flex items-center gap-1 font-mono">
+                    <Shield className="w-3 h-3" /> MITRE ATT&CK Mapped
+                  </span>
+                </div>
                 <span className="text-xs text-gray-400">Ranked by risk weight</span>
               </div>
               <div className="space-y-3">
                 {result.factors.map((f, i) => (
-                  <EvidenceCard key={`${f.code}-${i}`} factor={f} index={i} />
+                  <EvidenceCard
+                    key={`${f.code}-${i}`}
+                    factor={f}
+                    index={i}
+                    onSelectMitre={(technique) => setSelectedMitre(technique)}
+                  />
                 ))}
               </div>
             </div>
@@ -173,11 +205,23 @@ export default function AnalysisResultView({ result, onReset, saveStatus, childr
 
           {/* Analysis Metadata Footer */}
           <div className="glass-pill px-4 py-2.5 text-xs text-gray-400 font-mono flex flex-wrap items-center justify-between gap-3 border-white/10">
-            <span>Engine: {result.meta.model || 'Gemini 2.5'}</span>
+            <span>Engine: {result.meta.model || 'Gemini 3.5'}</span>
             <span>Version: {result.meta.prompt_version || 'v1'}</span>
             <span>Execution: {(result.meta.duration_ms / 1000).toFixed(2)}s</span>
             <span>Report ID: #{result.id}</span>
           </div>
+
+          {/* Modals & Drawers */}
+          <ForensicDossierModal
+            result={result}
+            isOpen={dossierOpen}
+            onClose={() => setDossierOpen(false)}
+          />
+
+          <MitreAttackDrawer
+            technique={selectedMitre}
+            onClose={() => setSelectedMitre(null)}
+          />
         </>
       )}
     </div>

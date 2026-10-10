@@ -279,25 +279,30 @@ export default function Dashboard() {
                 );
               })}
 
-              {/* Security Activity Quick Link Card */}
-              <div className="glass-card p-5 rounded-2xl border-white/15 flex flex-col justify-between min-h-[140px]">
+              {/* Adversarial Playground & Red-Team Sandbox Card */}
+              <Link
+                to="/playground"
+                className="group glass-card p-5 rounded-2xl hover:border-purple-400/60 transition-all duration-200 flex flex-col justify-between min-h-[140px] hover:shadow-[0_0_24px_rgba(168,85,247,0.25)] relative overflow-hidden"
+              >
+                <div className="absolute top-2 right-2 px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 text-[10px] font-mono border border-purple-500/30">
+                  NEW: RED TEAM
+                </div>
                 <div>
-                  <div className="icon-tile w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center mb-3">
-                    <Shield className="w-5 h-5 text-cyan" />
+                  <div className="icon-tile icon-tile-gradient w-10 h-10 rounded-xl flex items-center justify-center transition-transform group-hover:scale-110 mb-3">
+                    <Shield className="w-5 h-5 text-white" />
                   </div>
-                  <h3 className="text-base font-bold text-white">Private & Local</h3>
+                  <h3 className="text-base font-bold text-white group-hover:text-purple-300 transition-colors">
+                    Adversarial Lab
+                  </h3>
                   <p className="text-xs text-gray-300 mt-1 leading-relaxed">
-                    Zero retention by default. Inspect unverified items without exposing passwords or data.
+                    Test prompt injections, homoglyph evasion & verify 3-layer defense telemetry live.
                   </p>
                 </div>
-                <Link
-                  to="/privacy"
-                  className="pt-3 mt-3 border-t border-white/10 text-xs font-semibold text-cyan hover:text-white flex items-center justify-between"
-                >
-                  <span>Read Privacy Layer</span>
-                  <ExternalLink className="w-3.5 h-3.5" />
-                </Link>
-              </div>
+                <div className="pt-3 mt-3 border-t border-white/10 flex items-center justify-between text-xs text-purple-300 font-semibold group-hover:text-white">
+                  <span>Enter Sandbox</span>
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </Link>
             </div>
           </div>
         </div>

@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { NavLink, Outlet, Link } from 'react-router-dom';
-import { Shield, Menu, X, History, Lock, Settings as SettingsIcon, User } from 'lucide-react';
+import { Shield, Menu, X, History, Lock, Settings as SettingsIcon, User, Terminal } from 'lucide-react';
 import { useAuth } from '../../auth/AuthProvider';
 import VerifyEmailBanner from '../auth/VerifyEmailBanner';
 
 const navLinks = [
   { to: '/', label: 'Home', end: true },
+  { to: '/playground', label: 'Adversarial Lab', icon: Terminal },
   { to: '/history', label: 'History', icon: History },
   { to: '/privacy', label: 'Privacy', icon: Lock },
   { to: '/settings', label: 'Settings', icon: SettingsIcon },
