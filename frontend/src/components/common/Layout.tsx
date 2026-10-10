@@ -22,8 +22,8 @@ export default function Layout() {
       <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
         {/* Background Command Center Image with Subtle Opacity and Vignette */}
         <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-25 mix-blend-luminosity scale-105"
-          style={{ backgroundImage: `url('/cyber_command_bg.jpg')` }}
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-25 mix-blend-luminosity max-md:mix-blend-normal scale-105"
+          style={{ backgroundImage: `url('${import.meta.env.BASE_URL}cyber_command_bg.jpg')` }}
         />
         {/* Dark Radial Center Mask ensuring center content remains uncluttered and readable */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(3,9,18,0.7)_0%,rgba(3,9,18,0.92)_65%,rgba(3,9,18,0.98)_100%)]" />
@@ -121,9 +121,12 @@ export default function Layout() {
                 <Link
                   to="/settings"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="block px-3.5 py-2.5 rounded-xl text-sm text-gray-200 hover:text-white min-h-[44px] flex items-center"
+                  className="px-3.5 py-2.5 rounded-xl text-sm text-gray-200 hover:text-white min-h-[44px] flex items-center gap-2 overflow-hidden"
                 >
-                  Account: {isGuest ? 'Guest' : (user.email || 'Signed in')}
+                  <User className="w-4 h-4 text-cyan shrink-0" />
+                  <span className="truncate">
+                    {isGuest ? 'Guest Session' : (user.email || 'Signed in')}
+                  </span>
                 </Link>
               ) : (
                 <Link

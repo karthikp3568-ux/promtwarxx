@@ -59,8 +59,9 @@ async def generate_structured(
     contents.append(prompt)
 
     candidate_models = [settings.gemini_model]
-    if settings.gemini_model != "gemini-3.5-flash":
-        candidate_models.append("gemini-3.5-flash")
+    for fallback in ["gemini-2.0-flash", "gemini-1.5-flash"]:
+        if fallback not in candidate_models:
+            candidate_models.append(fallback)
 
     for model_name in candidate_models:
         for attempt in range(MAX_RETRIES + 1):
@@ -138,8 +139,9 @@ async def generate_text(
     contents.append(prompt)
 
     candidate_models = [settings.gemini_model]
-    if settings.gemini_model != "gemini-3.5-flash":
-        candidate_models.append("gemini-3.5-flash")
+    for fallback in ["gemini-2.0-flash", "gemini-1.5-flash"]:
+        if fallback not in candidate_models:
+            candidate_models.append(fallback)
 
     for model_name in candidate_models:
         for attempt in range(MAX_RETRIES + 1):

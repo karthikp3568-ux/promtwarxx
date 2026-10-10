@@ -75,10 +75,10 @@ _INJECTION_PATTERNS = [
     re.compile(r'ignore\s+(?:all|any|previous|prior)\s+instructions', re.IGNORECASE),
     re.compile(r'you\s+are\s+an\s+AI', re.IGNORECASE),
     re.compile(r'(?:note|instruction|message)\s+to\s+(?:the\s+|an?\s+)?AI(?:\s+systems?)?', re.IGNORECASE),
-    re.compile(r'(?:rate|mark|classify|label)\s+(?:this|it|the\s+\w+)\s+(?:as\s+)?(?:safe|low|benign|legitimate)', re.IGNORECASE),
+    re.compile(r'(?:rate|mark|classify|label)\s+.*(?:safe|low|benign|legitimate)', re.IGNORECASE),
     re.compile(r'verified\s+safe,\s*(?:rate|mark|classify)', re.IGNORECASE),
-    re.compile(r'system\s+prompt', re.IGNORECASE),
-    re.compile(r'(?:forget|disregard)\s+(?:your|all|the)\s+(?:instructions|rules|guidelines)', re.IGNORECASE),
+    re.compile(r'system\s+(?:prompt|override|directive)', re.IGNORECASE),
+    re.compile(r'(?:forget|disregard)\s+.*(?:instructions|rules|guidelines)', re.IGNORECASE),
     re.compile(r'new\s+instructions?\s*:', re.IGNORECASE),
 ]
 

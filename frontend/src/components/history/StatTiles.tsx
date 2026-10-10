@@ -34,7 +34,7 @@ export default function StatTiles({
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5">
-        <div className="glass-card p-4 rounded-2xl flex flex-col justify-between border-white/20 hover:border-white/35 transition-all">
+        <div className="glass-card col-span-2 sm:col-span-1 p-4 rounded-2xl flex flex-col justify-between border-white/20 hover:border-white/35 transition-all">
           <span className="text-xs font-semibold uppercase tracking-wider text-gray-400">Total Scans</span>
           <span className="text-3xl font-extrabold text-white mt-2 tracking-tight">{total}</span>
         </div>

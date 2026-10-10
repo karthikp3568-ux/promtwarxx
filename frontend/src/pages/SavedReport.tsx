@@ -132,6 +132,7 @@ export default function SavedReport() {
 
         <Link
           to={`/check/whatif?analysis_id=${record.id}`}
+          state={{ analysisResult: record }}
           className="btn-primary flex items-center gap-2 px-5 py-2.5 min-h-[44px] text-sm font-bold shadow-lg"
         >
           <GitBranch className="w-4 h-4" />

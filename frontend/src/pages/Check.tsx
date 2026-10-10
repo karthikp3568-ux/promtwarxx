@@ -100,20 +100,34 @@ export default function Check() {
     if (analysis.state === 'idle') {
       const incomingResult = location.state?.analysisResult;
       const prefill = location.state?.prefillContent;
-      if (feature === 'whatif' && incomingResult) {
-        analysis.simulate({
-          analysis_id: incomingResult.id,
-          analysis: incomingResult,
-        });
-      } else if (prefill) {
-        if (feature === 'whatif') {
+      const searchParams = new URLSearchParams(location.search);
+      const queryAnalysisId = searchParams.get('analysis_id');
+
+      if (feature === 'whatif') {
+        if (incomingResult) {
+          analysis.simulate({
+            analysis_id: incomingResult.id,
+            analysis: incomingResult,
+          });
+        } else if (queryAnalysisId) {
+          analysis.simulate({
+            analysis_id: queryAnalysisId,
+          });
+        } else if (prefill) {
           analysis.simulate({ description: prefill });
+        }
+      } else if (prefill) {
+        // If user tries an example on voice or document (which require binary files), load their sample file
+        if (feature === 'voice') {
+          handleSample();
+        } else if (feature === 'document') {
+          handleSample();
         } else {
           analysis.analyze(prefill, undefined, feature);
         }
       }
     }
-  }, [feature, location.state, analysis.state]);
+  }, [feature, location.state, location.search, analysis.state]);
 
   if (!config || !feature) {
     return <Navigate to="/" replace />;

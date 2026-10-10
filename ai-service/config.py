@@ -1,15 +1,15 @@
-﻿from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings
 from typing import Optional
 
 
 class Settings(BaseSettings):
     gemini_api_key: Optional[str] = None
-    gemini_model: str = "gemini-3.5-flash"
+    gemini_model: str = "gemini-2.0-flash"
     voice_model_id: str = "DavidCombei/wavLM-base-Deepfake_V2"
     voice_model_enabled: bool = True
     url_fetch_enabled: bool = True
     demo_cache: bool = False
-    allowed_origins: str = "http://localhost:5173,http://localhost:4173,https://promtwars-745af.web.app,https://promtwars-745af.firebaseapp.com"
+    allowed_origins: str = "http://localhost:5173,http://127.0.0.1:5173,http://localhost:4173,http://127.0.0.1:4173,https://promtwars-745af.web.app,https://promtwars-745af.firebaseapp.com"
     firebase_project_id: str = "promtwars-745af"
     google_application_credentials: Optional[str] = None
     use_firebase_emulators: bool = False

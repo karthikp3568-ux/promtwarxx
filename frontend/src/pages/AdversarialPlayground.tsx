@@ -145,9 +145,9 @@ export default function AdversarialPlayground() {
     <div className="w-full max-w-5xl mx-auto space-y-8 animate-fadeIn">
       {/* Header */}
       <div className="text-center max-w-3xl mx-auto">
-        <div className="inline-flex items-center gap-2 glass-pill px-4 py-1.5 mb-3 border-cyan/30 text-cyan text-xs font-semibold">
-          <Terminal className="w-3.5 h-3.5" />
-          <span>Red Team Testing & Adversarial AI Lab</span>
+        <div className="inline-flex max-w-full flex-wrap items-center justify-center gap-2 glass-pill px-3.5 sm:px-4 py-1.5 mb-3 border-cyan/30 text-cyan text-[10px] sm:text-xs font-semibold">
+          <Terminal className="w-3.5 h-3.5 shrink-0" />
+          <span className="text-center tracking-wider">Red Team Testing & Adversarial AI Lab</span>
         </div>
         <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight mb-3">
           Adversarial <span className="text-gradient-primary">Defense Playground</span>

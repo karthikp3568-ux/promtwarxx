@@ -191,9 +191,9 @@ export default function Dashboard() {
 
         {/* Hero Headline & Subline */}
         <div className="relative z-10 max-w-3xl mx-auto mb-10 sm:mb-12">
-          <div className="inline-flex items-center gap-2 glass-pill px-4 py-1.5 mb-5 border-[#00F5A0]/30 text-[#00F5A0] text-xs font-semibold shadow-[0_0_15px_rgba(0,245,160,0.2)]">
-            <span className="w-2 h-2 rounded-full bg-[#00F5A0] animate-ping" />
-            <span>AI-POWERED DIGITAL SAFETY LAYER</span>
+          <div className="inline-flex max-w-full flex-wrap items-center justify-center gap-2 glass-pill px-3.5 sm:px-4 py-1.5 mb-5 border-[#00F5A0]/30 text-[#00F5A0] text-[10px] sm:text-xs font-semibold shadow-[0_0_15px_rgba(0,245,160,0.2)]">
+            <span className="w-2 h-2 rounded-full bg-[#00F5A0] animate-ping shrink-0" />
+            <span className="text-center tracking-wider">AI-POWERED DIGITAL SAFETY LAYER</span>
           </div>
 
           <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-white mb-4">
@@ -278,7 +278,7 @@ export default function Dashboard() {
 
         {/* Central Inspection Panel ("What do you want to check?") */}
         <div className="relative max-w-4xl mx-auto w-full z-10">
-          <div className="glass-strong border border-[#00F5A0]/30 rounded-3xl p-6 sm:p-10 shadow-[0_0_40px_rgba(0,245,160,0.12)] relative z-10 w-full text-left">
+          <div className="glass-strong border border-[#00F5A0]/30 rounded-3xl p-4 sm:p-8 md:p-10 shadow-[0_0_40px_rgba(0,245,160,0.12)] relative z-10 w-full text-left">
             <div className="text-center mb-8">
               <h2 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight mb-2">
                 What do you want to check?
@@ -658,9 +658,11 @@ export default function Dashboard() {
             <Link to="/settings" className="hover:text-cyan transition-colors">
               Settings
             </Link>
-            <Link to="/dev/components" className="hover:text-cyan transition-colors">
-              Design System
-            </Link>
+            {import.meta.env.DEV && (
+              <Link to="/dev/components" className="hover:text-cyan transition-colors">
+                Design System
+              </Link>
+            )}
           </div>
         </div>
 

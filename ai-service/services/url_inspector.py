@@ -1,4 +1,5 @@
 """SSRF-safe URL inspector."""
+import asyncio
 import ipaddress
 import logging
 import re
@@ -177,7 +178,8 @@ async def inspect_url(url: str) -> tuple[list[str], UrlFinding]:
 
                 if not _is_ip_host(host):
                     try:
-                        infos = socket.getaddrinfo(host, None)
+                        loop = asyncio.get_running_loop()
+                        infos = await loop.getaddrinfo(host, None)
                         for info in infos:
                             ip_str = info[4][0]
                             if not _is_globally_routable(ip_str):
