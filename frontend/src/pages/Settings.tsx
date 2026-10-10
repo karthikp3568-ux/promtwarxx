@@ -72,20 +72,18 @@ export default function Settings() {
   };
 
   return (
-    <div className="w-full max-w-4xl space-y-8">
-      {/* Header */}
-      <div>
-        <div className="flex items-center gap-3 mb-2">
-          <div className="w-10 h-10 rounded-2xl bg-primary/20 border border-primary/30 flex items-center justify-center">
-            <SettingsIcon className="w-5 h-5 text-primary" />
+    <div className="w-full max-w-4xl mx-auto space-y-6 sm:space-y-8 animate-fadeIn">
+      {/* Page Header Card */}
+      <div className="glass-card p-6 sm:p-8 rounded-3xl border-white/20 shadow-xl">
+        <div className="flex items-center gap-3.5">
+          <div className="icon-tile icon-tile-gradient w-12 h-12 rounded-2xl flex items-center justify-center shrink-0">
+            <SettingsIcon className="w-6 h-6 text-white" />
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-            Account & <span className="text-gradient-primary">Settings</span>
-          </h1>
+          <div>
+            <h1 className="text-xl sm:text-3xl font-extrabold text-white tracking-tight">Account & Settings</h1>
+            <p className="text-xs sm:text-sm text-gray-300">Manage your session, privacy preferences, and stored security analysis logs.</p>
+          </div>
         </div>
-        <p className="text-sm text-gray-300 leading-relaxed">
-          Manage your session, privacy preferences, and stored security analysis logs.
-        </p>
       </div>
 
       {isGuest && (

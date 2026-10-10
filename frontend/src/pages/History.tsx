@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import { History as HistoryIcon, Trash2, Loader2, AlertCircle } from 'lucide-react';
 import { collection, getDocs, query, orderBy } from 'firebase/firestore';
 import { db } from '../firebase';
@@ -23,7 +23,7 @@ export default function HistoryPage() {
   const [confirmClearOpen, setConfirmClearOpen] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
 
-  const fetchHistory = async () => {
+  const fetchHistory = useCallback(async () => {
     if (!user) {
       setLoading(false);
       return;
@@ -61,11 +61,11 @@ export default function HistoryPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user]);
 
   useEffect(() => {
     fetchHistory();
-  }, [user]);
+  }, [fetchHistory]);
 
   // Statistics
   const stats = useMemo(() => {
@@ -155,7 +155,7 @@ export default function HistoryPage() {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full max-w-5xl mx-auto animate-fadeIn">
       {user?.isAnonymous && (
         <div className="mb-6">
           <GuestUpgradeBanner />
@@ -168,7 +168,7 @@ export default function HistoryPage() {
             <HistoryIcon className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h1 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">Investigation History</h1>
+            <h1 className="text-xl sm:text-3xl font-extrabold text-white tracking-tight">Investigation History</h1>
             <p className="text-xs sm:text-sm text-gray-300">Review past security scans, threat factors, and attack paths</p>
           </div>
         </div>

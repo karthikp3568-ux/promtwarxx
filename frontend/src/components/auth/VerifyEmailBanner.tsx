@@ -31,7 +31,7 @@ export default function VerifyEmailBanner() {
         <div>
           <span className="font-bold text-cyan">Email Verification Required:</span>{' '}
           <span className="text-gray-200">
-            We sent a verification link to <span className="text-white font-mono">{user.email}</span>.
+            We sent a verification link to <span className="text-white font-mono break-all">{user.email}</span>.
           </span>
         </div>
       </div>

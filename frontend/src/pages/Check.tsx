@@ -9,7 +9,7 @@ import AnalysisResultView from '../features/conversation/AnalysisResultView';
 import AttackPath from '../components/attack-path/AttackPath';
 import { useConversationAnalysis } from '../features/conversation/useConversationAnalysis';
 import { API_BASE } from '../api/client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
 
 interface FeatureConfig {
@@ -88,46 +88,95 @@ const featureConfigs: Record<string, FeatureConfig> = {
   },
 };
 
-export default function Check() {
+// Remount per feature so switching check types never shows a stale result
+export default function CheckRoute() {
+  const { feature } = useParams<{ feature: string }>();
+  return <Check key={feature} />;
+}
+
+function Check() {
   const { feature } = useParams<{ feature: string }>();
   const location = useLocation();
   const config = feature ? featureConfigs[feature] : undefined;
   const analysis = useConversationAnalysis();
+  const { analyze, simulate } = analysis;
   const [sampleLoading, setSampleLoading] = useState(false);
 
-  // Auto-trigger simulation or analysis if redirected from an analysis result or sample card
-  useEffect(() => {
-    if (analysis.state === 'idle') {
-      const incomingResult = location.state?.analysisResult;
-      const prefill = location.state?.prefillContent;
-      const searchParams = new URLSearchParams(location.search);
-      const queryAnalysisId = searchParams.get('analysis_id');
-
-      if (feature === 'whatif') {
-        if (incomingResult) {
-          analysis.simulate({
-            analysis_id: incomingResult.id,
-            analysis: incomingResult,
-          });
-        } else if (queryAnalysisId) {
-          analysis.simulate({
-            analysis_id: queryAnalysisId,
-          });
-        } else if (prefill) {
-          analysis.simulate({ description: prefill });
-        }
-      } else if (prefill) {
-        // If user tries an example on voice or document (which require binary files), load their sample file
-        if (feature === 'voice') {
-          handleSample();
-        } else if (feature === 'document') {
-          handleSample();
+  const handleSample = useCallback(async () => {
+    setSampleLoading(true);
+    try {
+      if (feature === 'conversation') {
+        const res = await fetch(`${API_BASE}/samples/kyc_block_sms.txt`);
+        if (res.ok) {
+          const text = await res.text();
+          analyze(text, undefined, 'conversation');
         } else {
-          analysis.analyze(prefill, undefined, feature);
+          const sampleText = `URGENT: Your Bharat National Bank account has been temporarily blocked due to incomplete KYC verification. Update your KYC immediately to avoid permanent account closure.\n\nClick here to verify: https://bharat-national-bank-kyc.example.com/verify?ref=KYC2024-8834\n\nYou will receive an OTP on your registered mobile number. Please share the OTP with our verification team to complete the process.\n\nThis is an automated message from Bharat National Bank Security Division.\nContact: support@bharatbank.example.com\nRef: BNB/KYC/2024/8834\n\nAct within 24 hours or your account will be permanently closed.`;
+          analyze(sampleText, undefined, 'conversation');
+        }
+      } else if (feature === 'whatif') {
+        const sampleScenario = `A caller claimed to be from my bank's fraud detection squad. They said an unauthorized transaction of Rs 48,000 was flagged on my account and I needed to verify my identity immediately by clicking a link and confirming my OTP to stop the payment.`;
+        simulate({ description: sampleScenario });
+      } else if (feature === 'payment') {
+        const res = await fetch(`${API_BASE}/samples/job_fee_qr.png`);
+        if (res.ok) {
+          const blob = await res.blob();
+          const file = new File([blob], 'job_fee_qr.png', { type: 'image/png' });
+          analyze(undefined, file, 'payment');
+        }
+      } else if (feature === 'document') {
+        const res = await fetch(`${API_BASE}/samples/scholarship_notice.pdf`);
+        if (res.ok) {
+          const blob = await res.blob();
+          const file = new File([blob], 'scholarship_notice.pdf', { type: 'application/pdf' });
+          analyze(undefined, file, 'document');
+        }
+      } else if (feature === 'voice') {
+        const res = await fetch(`${API_BASE}/samples/bank_call.wav`);
+        if (res.ok) {
+          const blob = await res.blob();
+          const file = new File([blob], 'bank_call.wav', { type: 'audio/wav' });
+          analyze(undefined, file, 'voice');
         }
       }
+    } catch {
+      // Fallback
+    } finally {
+      setSampleLoading(false);
     }
-  }, [feature, location.state, location.search, analysis.state]);
+  }, [feature, analyze, simulate]);
+
+  // Auto-trigger simulation or analysis if redirected from an analysis result or sample card.
+  // Guarded per navigation so resetting back to idle does not replay the same prefill.
+  const handledNavKey = useRef<string | null>(null);
+  useEffect(() => {
+    if (analysis.state !== 'idle' || handledNavKey.current === location.key) return;
+    handledNavKey.current = location.key;
+
+    const incomingResult = location.state?.analysisResult;
+    const prefill = location.state?.prefillContent;
+    const queryAnalysisId = new URLSearchParams(location.search).get('analysis_id');
+
+    if (feature === 'whatif') {
+      if (incomingResult) {
+        simulate({
+          analysis_id: incomingResult.id,
+          analysis: incomingResult,
+        });
+      } else if (queryAnalysisId) {
+        simulate({ analysis_id: queryAnalysisId });
+      } else if (prefill) {
+        simulate({ description: prefill });
+      }
+    } else if (prefill) {
+      // Voice and document require binary files, so load their sample file instead
+      if (feature === 'voice' || feature === 'document') {
+        handleSample();
+      } else {
+        analyze(prefill, undefined, feature);
+      }
+    }
+  }, [feature, location.key, location.state, location.search, analysis.state, analyze, simulate, handleSample]);
 
   if (!config || !feature) {
     return <Navigate to="/" replace />;
@@ -150,49 +199,6 @@ export default function Check() {
     analysis.analyze(undefined, file, feature);
   };
 
-  const handleSample = async () => {
-    setSampleLoading(true);
-    try {
-      if (feature === 'conversation') {
-        const res = await fetch(`${API_BASE}/samples/kyc_block_sms.txt`);
-        if (res.ok) {
-          const text = await res.text();
-          analysis.analyze(text, undefined, 'conversation');
-        } else {
-          const sampleText = `URGENT: Your Bharat National Bank account has been temporarily blocked due to incomplete KYC verification. Update your KYC immediately to avoid permanent account closure.\n\nClick here to verify: https://bharat-national-bank-kyc.example.com/verify?ref=KYC2024-8834\n\nYou will receive an OTP on your registered mobile number. Please share the OTP with our verification team to complete the process.\n\nThis is an automated message from Bharat National Bank Security Division.\nContact: support@bharatbank.example.com\nRef: BNB/KYC/2024/8834\n\nAct within 24 hours or your account will be permanently closed.`;
-          analysis.analyze(sampleText, undefined, 'conversation');
-        }
-      } else if (feature === 'whatif') {
-        const sampleScenario = `A caller claimed to be from my bank's fraud detection squad. They said an unauthorized transaction of Rs 48,000 was flagged on my account and I needed to verify my identity immediately by clicking a link and confirming my OTP to stop the payment.`;
-        analysis.simulate({ description: sampleScenario });
-      } else if (feature === 'payment') {
-        const res = await fetch(`${API_BASE}/samples/job_fee_qr.png`);
-        if (res.ok) {
-          const blob = await res.blob();
-          const file = new File([blob], 'job_fee_qr.png', { type: 'image/png' });
-          analysis.analyze(undefined, file, 'payment');
-        }
-      } else if (feature === 'document') {
-        const res = await fetch(`${API_BASE}/samples/scholarship_notice.pdf`);
-        if (res.ok) {
-          const blob = await res.blob();
-          const file = new File([blob], 'scholarship_notice.pdf', { type: 'application/pdf' });
-          analysis.analyze(undefined, file, 'document');
-        }
-      } else if (feature === 'voice') {
-        const res = await fetch(`${API_BASE}/samples/bank_call.wav`);
-        if (res.ok) {
-          const blob = await res.blob();
-          const file = new File([blob], 'bank_call.wav', { type: 'audio/wav' });
-          analysis.analyze(undefined, file, 'voice');
-        }
-      }
-    } catch {
-      // Fallback
-    } finally {
-      setSampleLoading(false);
-    }
-  };
 
   return (
     <div className="w-full max-w-4xl mx-auto space-y-6 sm:space-y-8 animate-fadeIn">

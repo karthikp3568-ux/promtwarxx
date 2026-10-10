@@ -147,11 +147,11 @@ Reported via TrustGuard AI Digital Safety Layer (Ref: ${result.id})`;
           </p>
         </div>
 
-        <div className="flex items-center gap-2 shrink-0 w-full sm:w-auto">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 shrink-0 w-full sm:w-auto">
           <button
             type="button"
             onClick={handleCopyDraft}
-            className="btn-glass text-xs font-bold px-4 py-2 min-h-[40px] flex items-center justify-center gap-1.5 flex-1 sm:flex-initial text-white"
+            className="btn-glass text-xs font-bold px-4 py-2 min-h-[40px] flex items-center justify-center gap-1.5 w-full sm:w-auto text-center sm:whitespace-nowrap text-white"
           >
             {copiedDraft ? (
               <>
@@ -170,7 +170,7 @@ Reported via TrustGuard AI Digital Safety Layer (Ref: ${result.id})`;
             href="https://cybercrime.gov.in"
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-primary text-xs font-bold px-4 py-2 min-h-[40px] flex items-center justify-center gap-1.5 shrink-0"
+            className="btn-primary text-xs font-bold px-4 py-2 min-h-[40px] flex items-center justify-center gap-1.5 w-full sm:w-auto text-center sm:whitespace-nowrap"
           >
             <span>Cybercrime Portal</span>
             <ExternalLink className="w-3.5 h-3.5" />

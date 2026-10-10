@@ -2,20 +2,18 @@ import { Shield, Lock, EyeOff, Server, Database, AlertTriangle, ExternalLink, Ch
 
 export default function Privacy() {
   return (
-    <div className="w-full max-w-4xl space-y-8">
-      {/* Header */}
-      <div>
-        <div className="flex items-center gap-3 mb-2">
-          <div className="w-10 h-10 rounded-2xl bg-primary/20 border border-primary/30 flex items-center justify-center">
-            <Lock className="w-5 h-5 text-primary" />
+    <div className="w-full max-w-4xl mx-auto space-y-6 sm:space-y-8 animate-fadeIn">
+      {/* Page Header Card */}
+      <div className="glass-card p-6 sm:p-8 rounded-3xl border-white/20 shadow-xl">
+        <div className="flex items-center gap-3.5">
+          <div className="icon-tile icon-tile-gradient w-12 h-12 rounded-2xl flex items-center justify-center shrink-0">
+            <Lock className="w-6 h-6 text-white" />
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-            Privacy & <span className="text-gradient-primary">Data Protection</span>
-          </h1>
+          <div>
+            <h1 className="text-xl sm:text-3xl font-extrabold text-white tracking-tight">Privacy & Data Protection</h1>
+            <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">TrustGuard AI is engineered from the ground up on zero-retention and privacy-preserving principles. We never retain your private conversations, credentials, or personal documents.</p>
+          </div>
         </div>
-        <p className="text-sm text-gray-300 leading-relaxed max-w-2xl">
-          TrustGuard AI is engineered from the ground up on zero-retention and privacy-preserving principles. We never retain your private conversations, credentials, or personal documents.
-        </p>
       </div>
 
       {/* Highlights Grid */}

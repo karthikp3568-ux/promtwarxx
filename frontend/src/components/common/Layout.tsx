@@ -1,8 +1,9 @@
-import { useState } from 'react';
-import { NavLink, Outlet, Link } from 'react-router-dom';
-import { Shield, Menu, X, History, Lock, Settings as SettingsIcon, User, Terminal } from 'lucide-react';
+import { useState, Suspense } from 'react';
+import { NavLink, Outlet, Link, useLocation } from 'react-router-dom';
+import { Shield, Menu, X, History, Lock, Settings as SettingsIcon, User, Terminal, Loader2 } from 'lucide-react';
 import { useAuth } from '../../auth/AuthProvider';
 import VerifyEmailBanner from '../auth/VerifyEmailBanner';
+import RouteErrorBoundary from './RouteErrorBoundary';
 
 const navLinks = [
   { to: '/', label: 'Home', end: true },
@@ -14,6 +15,7 @@ const navLinks = [
 
 export default function Layout() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { pathname } = useLocation();
   const { user, isGuest } = useAuth();
 
   return (
@@ -49,7 +51,7 @@ export default function Layout() {
           </NavLink>
 
           {/* Desktop nav */}
-          <div className="hidden md:flex items-center gap-1.5">
+          <div className="hidden lg:flex items-center gap-1.5">
             {navLinks.map((link) => (
               <NavLink
                 key={link.to}
@@ -90,7 +92,7 @@ export default function Layout() {
           {/* Mobile menu button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2.5 text-gray-300 hover:text-white min-h-[44px] min-w-[44px] flex items-center justify-center rounded-xl glass-pill"
+            className="lg:hidden p-2.5 text-gray-300 hover:text-white min-h-[44px] min-w-[44px] flex items-center justify-center rounded-xl glass-pill"
             aria-label="Toggle menu"
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -99,7 +101,7 @@ export default function Layout() {
 
         {/* Mobile menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden border-t border-white/15 py-3 px-4 space-y-2 glass-strong">
+          <div className="lg:hidden border-t border-white/15 py-3 px-4 space-y-2 glass-strong">
             {navLinks.map((link) => (
               <NavLink
                 key={link.to}
@@ -145,7 +147,18 @@ export default function Layout() {
       {/* Main Page Area */}
       <main className="page-container flex-1 relative z-10 w-full max-w-[100vw] overflow-x-clip">
         <VerifyEmailBanner />
-        <Outlet />
+        <RouteErrorBoundary key={pathname}>
+          <Suspense
+            fallback={
+              <div role="status" aria-live="polite" className="py-20 flex flex-col items-center justify-center gap-3">
+                <Loader2 className="w-8 h-8 text-primary animate-spin" aria-hidden="true" />
+                <span className="text-sm text-gray-400">Loading...</span>
+              </div>
+            }
+          >
+            <Outlet />
+          </Suspense>
+        </RouteErrorBoundary>
       </main>
     </div>
   );

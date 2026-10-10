@@ -4,15 +4,17 @@ import { AuthProvider } from './auth/AuthProvider';
 import ProtectedRoute from './auth/ProtectedRoute';
 import Layout from './components/common/Layout';
 import Dashboard from './pages/Dashboard';
-import Check from './pages/Check';
-import HistoryPage from './pages/History';
-import SavedReport from './pages/SavedReport';
-import Settings from './pages/Settings';
-import Privacy from './pages/Privacy';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import ResetPassword from './pages/ResetPassword';
-import AdversarialPlayground from './pages/AdversarialPlayground';
+
+// Route-level code splitting: only the landing page ships in the main bundle
+const Check = lazy(() => import('./pages/Check'));
+const HistoryPage = lazy(() => import('./pages/History'));
+const SavedReport = lazy(() => import('./pages/SavedReport'));
+const Settings = lazy(() => import('./pages/Settings'));
+const Privacy = lazy(() => import('./pages/Privacy'));
+const Login = lazy(() => import('./pages/Login'));
+const Register = lazy(() => import('./pages/Register'));
+const ResetPassword = lazy(() => import('./pages/ResetPassword'));
+const AdversarialPlayground = lazy(() => import('./pages/AdversarialPlayground'));
 
 // Dev-only: the dynamic import string is computed so Vite cannot
 // statically analyze it and will NOT include it in the production bundle.
