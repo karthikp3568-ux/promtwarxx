@@ -26,6 +26,7 @@ interface AuthContextType {
   error: string | null;
   profile: UserProfile;
   isGuest: boolean;
+  guestDisabled: boolean;
   signIn: (email: string, pass: string) => Promise<void>;
   register: (email: string, pass: string, displayName?: string) => Promise<void>;
   signInGuest: () => Promise<void>;
@@ -44,6 +45,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [profile, setProfile] = useState<UserProfile>({ saveAnalysisHistory: true });
+  const [guestDisabled, setGuestDisabled] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
@@ -134,7 +136,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       await signInAnonymously(auth);
     } catch (err: unknown) {
-      const msg = getAuthErrorMessage((err as { code?: string }).code ?? '');
+      const code = (err as { code?: string }).code ?? '';
+      // Anonymous provider is disabled in the Firebase project: hide the guest option.
+      if (code === 'auth/admin-restricted-operation' || code === 'auth/operation-not-allowed') {
+        setGuestDisabled(true);
+      }
+      const msg = getAuthErrorMessage(code);
       setError(msg);
       throw new Error(msg);
     }
@@ -196,6 +203,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     error,
     profile,
     isGuest: Boolean(user?.isAnonymous),
+    guestDisabled,
     signIn,
     register,
     signInGuest,

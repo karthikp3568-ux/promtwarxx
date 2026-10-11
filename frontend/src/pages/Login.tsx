@@ -4,7 +4,7 @@ import { useAuth } from '../auth/AuthProvider';
 import AuthForm from '../components/auth/AuthForm';
 
 export default function Login() {
-  const { signIn, signInGuest, error, clearError } = useAuth();
+  const { signIn, signInGuest, guestDisabled, error, clearError } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [loading, setLoading] = useState(false);
@@ -40,7 +40,7 @@ export default function Login() {
       <AuthForm
         mode="login"
         onSubmit={handleLogin}
-        onGuestClick={handleGuest}
+        onGuestClick={guestDisabled ? undefined : handleGuest}
         loading={loading}
         error={error}
       />

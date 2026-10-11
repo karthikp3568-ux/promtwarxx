@@ -4,7 +4,7 @@ import { useAuth } from '../auth/AuthProvider';
 import AuthForm from '../components/auth/AuthForm';
 
 export default function Register() {
-  const { register, signInGuest, error, clearError } = useAuth();
+  const { register, signInGuest, guestDisabled, error, clearError } = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
@@ -37,7 +37,7 @@ export default function Register() {
       <AuthForm
         mode="register"
         onSubmit={handleRegister}
-        onGuestClick={handleGuest}
+        onGuestClick={guestDisabled ? undefined : handleGuest}
         loading={loading}
         error={error}
       />

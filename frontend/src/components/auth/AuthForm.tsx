@@ -38,7 +38,7 @@ export default function AuthForm({
       </p>
 
       {error && (
-        <div className="mb-6 p-3.5 glass-pill bg-[#F43F5E]/20 border-[#F43F5E]/50 text-xs sm:text-sm text-red-200">
+        <div role="alert" className="mb-6 p-3.5 glass-pill bg-[#F43F5E]/20 border-[#F43F5E]/50 text-xs sm:text-sm text-red-200">
           {error}
         </div>
       )}
@@ -46,13 +46,15 @@ export default function AuthForm({
       <form onSubmit={handleSubmit} className="space-y-4">
         {mode === 'register' && (
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1.5">
+            <label htmlFor="auth-display-name" className="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1.5">
               Display Name
             </label>
             <div className="relative">
               <UserIcon className="w-4 h-4 text-cyan absolute left-3.5 top-3.5" />
               <input
+                id="auth-display-name"
                 type="text"
+                autoComplete="name"
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
                 placeholder="Alex Morgan"
@@ -63,13 +65,15 @@ export default function AuthForm({
         )}
 
         <div>
-          <label className="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1.5">
+          <label htmlFor="auth-email" className="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1.5">
             Email Address
           </label>
           <div className="relative">
             <Mail className="w-4 h-4 text-cyan absolute left-3.5 top-3.5" />
             <input
+              id="auth-email"
               type="email"
+              autoComplete="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -80,13 +84,15 @@ export default function AuthForm({
         </div>
 
         <div>
-          <label className="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1.5">
+          <label htmlFor="auth-password" className="block text-xs font-semibold uppercase tracking-wider text-gray-300 mb-1.5">
             Password
           </label>
           <div className="relative">
             <Lock className="w-4 h-4 text-cyan absolute left-3.5 top-3.5" />
             <input
+              id="auth-password"
               type="password"
+              autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
